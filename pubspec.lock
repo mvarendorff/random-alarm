@@ -161,7 +161,7 @@ packages:
       path: "."
       ref: "192_embeddingV2"
       resolved-ref: "64596b1d117757d63e86fc8141cdf9062399bfa6"
-      url: "git://github.com/Boehrsi/plugins_flutter_file_picker"
+      url: "https://github.com/Boehrsi/plugins_flutter_file_picker.git"
     source: git
     version: "1.4.3+2"
   fixnum:

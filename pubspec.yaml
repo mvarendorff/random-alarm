@@ -25,7 +25,7 @@ dependencies:
   path_provider: ^1.5.1
   file_picker:
     git:
-      url: git://github.com/Boehrsi/plugins_flutter_file_picker
+      url: https://github.com/Boehrsi/plugins_flutter_file_picker.git
       ref: 192_embeddingV2
   flutter_audio_query: ^0.3.3
 
