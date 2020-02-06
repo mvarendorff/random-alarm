@@ -37,10 +37,7 @@ class AlarmItem extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: dates.map((x) => Text(x)).toList(),
-                    )
+                    DateRow(alarm: alarm)
                   ],
                 ),
                 IconButton(
@@ -55,6 +52,45 @@ class AlarmItem extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class DateRow extends StatelessWidget {
+  final ObservableAlarm alarm;
+  final List<bool> dayEnabled;
+
+  DateRow({
+    Key key,
+    this.alarm,
+  })  : dayEnabled = [
+          alarm.monday,
+          alarm.tuesday,
+          alarm.wednesday,
+          alarm.thursday,
+          alarm.friday,
+          alarm.saturday,
+          alarm.sunday
+        ],
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.fromSize(
+      size: Size(150, 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: dates.asMap().entries.map((indexStringPair) {
+          final dayString = indexStringPair.value;
+          final index = indexStringPair.key;
+          return Text(
+            dayString,
+            style: TextStyle(
+                fontWeight:
+                    dayEnabled[index] ? FontWeight.bold : FontWeight.normal),
+          );
+        }).toList(),
       ),
     );
   }
