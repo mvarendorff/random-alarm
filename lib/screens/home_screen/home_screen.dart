@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:random_alarm/components/alarm_item/alarm_item.dart';
 import 'package:random_alarm/components/bottom_add_button/bottom_add_button.dart';
 import 'package:random_alarm/components/default_container/default_container.dart';
@@ -43,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                 0.3,
                 true,
                 List.filled(7, false),
-                ['Just a Test']
+                ObservableList.of([]),
               );
               alarms.alarms.add(newAlarm);
               Navigator.push(
