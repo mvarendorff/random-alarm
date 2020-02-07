@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
+import 'package:random_alarm/stores/music_selection/music_selection.dart';
 import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
 
 class MusicSelectionDialog extends StatelessWidget {
-  final List<String> titles;
+  final List<SongInfo> titles;
   final ObservableAlarm alarm;
 
-  const MusicSelectionDialog({Key key, this.titles, this.alarm}) : super(key: key);
+  final MusicSelectionStore store;
+
+  MusicSelectionDialog({Key key, this.titles, this.alarm})
+      : store = MusicSelectionStore(
+            titles.map((info) => info.id).toList(), alarm.musicPaths),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +35,22 @@ class MusicSelectionDialog extends StatelessWidget {
                 )
               ],
             ),
-            MusicList(),
+            MusicList(titles: titles, store: store),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 FlatButton(
                   child: Text('Cancel'),
                   onPressed: () =>
-                      Navigator.pop(context), //TODO discard changes
+                      Navigator.pop(context),
                 ),
                 FlatButton(
                   child: Text('Done'),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    final newSelected = store.trackSelected.entries.where((entry) => entry.value).map((entry) => entry.key);
+                    alarm.musicPaths = ObservableList.of(newSelected);
+                    return Navigator.pop(context);
+                  },
                 )
               ],
             )
@@ -49,40 +62,28 @@ class MusicSelectionDialog extends StatelessWidget {
 }
 
 class MusicList extends StatelessWidget {
+  final List<SongInfo> titles;
+  final MusicSelectionStore store;
+
+  const MusicList({Key key, this.titles, this.store}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      itemBuilder: (context, index) =>
-          SelectableItem(
-            isSelected: false,
-            songName: titles[index],
-          ),
+      itemBuilder: (context, index) {
+        final title = titles[index];
+
+        return Observer(
+            builder: (context) => CheckboxListTile(
+                  value: store.trackSelected[title.id] ?? false,
+                  title: Text(title.title ?? title.displayName),
+                  onChanged: (newValue) {
+                    return store.trackSelected[title.id] = newValue;
+                  },
+                ));
+      },
       itemCount: titles.length,
-    );
-  }
-
-}
-
-class SelectableItem extends StatelessWidget {
-  final bool isSelected;
-  final String songName;
-
-  const SelectableItem({Key key, this.isSelected, this.songName})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Checkbox(
-            value: isSelected,
-            onChanged: (value) {
-              print('Yeet');
-            }),
-        Expanded(child: Text(songName)),
-      ],
     );
   }
 }

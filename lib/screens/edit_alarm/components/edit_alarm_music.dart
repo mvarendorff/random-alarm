@@ -14,8 +14,9 @@ class EditAlarmMusic extends StatelessWidget {
     final audioQuery = FlutterAudioQuery();
     final songs =
         await audioQuery.getSongs(sortType: SongSortType.DISPLAY_NAME);
-    final titles = songs.map((info) => info.title ?? info.displayName).toList();
-    showDialog(context: context, child: MusicSelectionDialog(titles: titles));
+    showDialog(
+        context: context,
+        child: MusicSelectionDialog(alarm: alarm, titles: songs));
   }
 
   @override
@@ -39,21 +40,19 @@ class EditAlarmMusic extends StatelessWidget {
           ],
         ),
         SizedBox.fromSize(
-          size: Size.fromHeight(150),
-          child: Observer(
-            builder: (context) => ReorderableListView(
+          size: Size.fromHeight(300),
+          child: ReorderableListView(
               children: this
                   .alarm
-                  .musicPaths
-                  .map((path) => MusicListItem(
+                  .trackInfo
+                  .map((title) => MusicListItem(
                         alarm: alarm,
-                        musicName: path,
-                        key: Key(path),
+                        musicName: title.title ?? title.displayName,
+                        key: Key(title.id),
                       ))
                   .toList(),
               onReorder: this.alarm.reorder,
             ),
-          ),
         ),
       ],
     );
