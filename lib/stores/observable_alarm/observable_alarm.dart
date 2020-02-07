@@ -100,6 +100,7 @@ abstract class ObservableAlarmBase with Store {
   ObservableList<String> musicPaths;
 
   @observable
+  @JsonKey(ignore: true)
   List<SongInfo> trackInfo;
 
   ObservableAlarmBase(
@@ -132,7 +133,7 @@ abstract class ObservableAlarmBase with Store {
   }
 
   @action
-  void loadTracks() async {
+  loadTracks() async {
     trackInfo = await FlutterAudioQuery().getSongsById(ids: musicPaths);
   }
 
