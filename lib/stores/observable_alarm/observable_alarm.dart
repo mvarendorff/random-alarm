@@ -1,5 +1,6 @@
-import 'package:mobx/mobx.dart';
+import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:mobx/mobx.dart';
 
 part 'observable_alarm.g.dart';
 
@@ -34,7 +35,8 @@ class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
             active: active,
             musicPaths: musicPaths);
 
-  ObservableAlarm.dayList(name, hour, minute, volume, active, weekdays, musicPaths)
+  ObservableAlarm.dayList(
+      name, hour, minute, volume, active, weekdays, musicPaths)
       : super(
             name: name,
             hour: hour,
@@ -97,6 +99,9 @@ abstract class ObservableAlarmBase with Store {
   @observable
   ObservableList<String> musicPaths;
 
+  @observable
+  List<SongInfo> trackInfo;
+
   ObservableAlarmBase(
       {this.name,
       this.hour,
@@ -124,6 +129,11 @@ abstract class ObservableAlarmBase with Store {
     musicPaths.removeAt(oldIndex);
     musicPaths.insert(newIndex, path);
     musicPaths = musicPaths;
+  }
+
+  @action
+  void loadTracks() async {
+    trackInfo = await FlutterAudioQuery().getSongsById(ids: musicPaths);
   }
 
 }
