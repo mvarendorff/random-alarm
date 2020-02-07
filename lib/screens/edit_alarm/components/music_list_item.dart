@@ -13,7 +13,7 @@ class MusicListItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text(this.musicName),
+        Expanded(child: Text(this.musicName)),
         IconButton(
           icon: Icon(Icons.clear),
           onPressed: () => this.alarm.removeItem(musicName),
