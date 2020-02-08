@@ -38,7 +38,7 @@ class MusicSelectionDialog extends StatelessWidget {
                 )
               ],
             ),
-            MusicList(store: store),
+            Expanded(child: MusicList(store: store)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -74,13 +74,10 @@ class MusicList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return SizedBox.fromSize(
-      size: Size.fromHeight(400),
-      child: Observer(
-        builder: (context) => ListView(
-          shrinkWrap: true,
-          children: store.filteredIds.map(widgetForSongId).toList(),
-        ),
+    return Observer(
+      builder: (context) => ListView(
+        shrinkWrap: true,
+        children: store.filteredIds.map(widgetForSongId).toList(),
       ),
     );
   }
