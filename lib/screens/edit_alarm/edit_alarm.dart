@@ -15,31 +15,33 @@ class EditAlarm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultContainer(
-      child: Column(children: [
-        Text(
-          'Alarm',
-          style: TextStyle(color: Colors.white, fontSize: 28),
-        ),
-        Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: <Widget>[
-                EditAlarmHead(alarm: this.alarm),
-                Divider(),
-                EditAlarmTime(alarm: this.alarm),
-                Divider(),
-                EditAlarmDays(alarm: this.alarm),
-                Divider(),
-                EditAlarmMusic(alarm: this.alarm),
-                Divider(),
-                EditAlarmSlider(alarm: this.alarm)
-              ],
+      child: SingleChildScrollView(
+        child: Column(children: [
+          Text(
+            'Alarm',
+            style: TextStyle(color: Colors.white, fontSize: 28),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: <Widget>[
+                  EditAlarmHead(alarm: this.alarm),
+                  Divider(),
+                  EditAlarmTime(alarm: this.alarm),
+                  Divider(),
+                  EditAlarmDays(alarm: this.alarm),
+                  Divider(),
+                  EditAlarmMusic(alarm: this.alarm),
+                  Divider(),
+                  EditAlarmSlider(alarm: this.alarm)
+                ],
+              ),
             ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }

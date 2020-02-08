@@ -12,6 +12,7 @@ class LifeCycleListener extends WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.paused:
+        alarms.alarms.forEach((alarm) => alarm.updateMusicPaths());
         JsonFileStorage().writeList(alarms.alarms);
         break;
       default:

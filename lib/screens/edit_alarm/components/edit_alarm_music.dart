@@ -41,18 +41,20 @@ class EditAlarmMusic extends StatelessWidget {
         ),
         SizedBox.fromSize(
           size: Size.fromHeight(300),
-          child: ReorderableListView(
-              children: this
-                  .alarm
-                  .trackInfo
-                  .map((title) => MusicListItem(
-                        alarm: alarm,
-                        musicName: title.title ?? title.displayName,
-                        key: Key(title.id),
-                      ))
-                  .toList(),
-              onReorder: this.alarm.reorder,
-            ),
+          child: Observer(
+            builder: (context) => ReorderableListView(
+                children: this
+                    .alarm
+                    .trackInfo
+                    .map((title) => MusicListItem(
+                          alarm: alarm,
+                          musicInfo: title,
+                          key: Key(title.id),
+                        ))
+                    .toList(),
+                onReorder: this.alarm.reorder,
+              ),
+          ),
         ),
       ],
     );

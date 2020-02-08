@@ -95,13 +95,14 @@ abstract class ObservableAlarmBase with Store {
   @observable
   bool active;
 
+  /// Field holding the IDs of the soundfiles that should be loaded
+  /// This is exclusively used for JSON serialization
   @_ObservableListJsonConverter()
-  @observable
-  ObservableList<String> musicPaths;
+  List<String> musicPaths;
 
   @observable
   @JsonKey(ignore: true)
-  List<SongInfo> trackInfo;
+  ObservableList<SongInfo> trackInfo = ObservableList();
 
   ObservableAlarmBase(
       {this.name,
@@ -119,22 +120,27 @@ abstract class ObservableAlarmBase with Store {
       this.musicPaths});
 
   @action
-  void removeItem(String musicPath) {
-    musicPaths.remove(musicPath);
-    musicPaths = musicPaths;
+  void removeItem(SongInfo info) {
+    trackInfo.remove(info);
+    trackInfo = trackInfo;
   }
 
   @action
   void reorder(int oldIndex, int newIndex) {
-    final path = musicPaths[oldIndex];
-    musicPaths.removeAt(oldIndex);
-    musicPaths.insert(newIndex, path);
-    musicPaths = musicPaths;
+    final path = trackInfo[oldIndex];
+    trackInfo.removeAt(oldIndex);
+    trackInfo.insert(newIndex, path);
+    trackInfo = trackInfo;
   }
 
   @action
   loadTracks() async {
-    trackInfo = await FlutterAudioQuery().getSongsById(ids: musicPaths);
+    final songs = await FlutterAudioQuery().getSongsById(ids: musicPaths);
+    trackInfo = ObservableList.of(songs);
+  }
+
+  updateMusicPaths() {
+    musicPaths = trackInfo.map((info) => info.id).toList();
   }
 
 }

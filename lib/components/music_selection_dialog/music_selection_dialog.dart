@@ -12,8 +12,8 @@ class MusicSelectionDialog extends StatelessWidget {
   final MusicSelectionStore store;
 
   MusicSelectionDialog({Key key, this.titles, this.alarm})
-      : store = MusicSelectionStore(
-            titles.map((info) => info.id).toList(), alarm.musicPaths),
+      : store = MusicSelectionStore(titles.map((info) => info.id).toList(),
+            alarm.trackInfo.map((info) => info.id).toList()),
         super(key: key);
 
   @override
@@ -41,14 +41,16 @@ class MusicSelectionDialog extends StatelessWidget {
               children: <Widget>[
                 FlatButton(
                   child: Text('Cancel'),
-                  onPressed: () =>
-                      Navigator.pop(context),
+                  onPressed: () => Navigator.pop(context),
                 ),
                 FlatButton(
                   child: Text('Done'),
                   onPressed: () {
-                    final newSelected = store.trackSelected.entries.where((entry) => entry.value).map((entry) => entry.key);
+                    final newSelected = store.trackSelected.entries
+                        .where((entry) => entry.value)
+                        .map((entry) => entry.key);
                     alarm.musicPaths = ObservableList.of(newSelected);
+                    alarm.loadTracks();
                     return Navigator.pop(context);
                   },
                 )
@@ -69,21 +71,24 @@ class MusicList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        final title = titles[index];
+    return SizedBox.fromSize(
+      size: Size.fromHeight(400),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          final title = titles[index];
 
-        return Observer(
-            builder: (context) => CheckboxListTile(
-                  value: store.trackSelected[title.id] ?? false,
-                  title: Text(title.title ?? title.displayName),
-                  onChanged: (newValue) {
-                    return store.trackSelected[title.id] = newValue;
-                  },
-                ));
-      },
-      itemCount: titles.length,
+          return Observer(
+              builder: (context) => CheckboxListTile(
+                    value: store.trackSelected[title.id] ?? false,
+                    title: Text(title.title ?? title.displayName),
+                    onChanged: (newValue) {
+                      return store.trackSelected[title.id] = newValue;
+                    },
+                  ));
+        },
+        itemCount: titles.length,
+      ),
     );
   }
 }
