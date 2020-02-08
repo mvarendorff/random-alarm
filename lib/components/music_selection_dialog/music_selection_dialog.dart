@@ -12,7 +12,7 @@ class MusicSelectionDialog extends StatelessWidget {
   final MusicSelectionStore store;
 
   MusicSelectionDialog({Key key, this.titles, this.alarm})
-      : store = MusicSelectionStore(titles.map((info) => info.id).toList(),
+      : store = MusicSelectionStore(titles,
             alarm.trackInfo.map((info) => info.id).toList()),
         super(key: key);
 
@@ -28,14 +28,17 @@ class MusicSelectionDialog extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Expanded(child: TextField(controller: controller)),
+                Expanded(child: TextField(onChanged: (newValue) => store.currentSearch = newValue ,controller: controller)),
                 IconButton(
                   icon: Icon(Icons.clear),
-                  onPressed: () => controller.clear(),
+                  onPressed: () {
+                    controller.clear();
+                    store.clearSearch();
+                  },
                 )
               ],
             ),
-            MusicList(titles: titles, store: store),
+            MusicList(store: store),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -64,31 +67,36 @@ class MusicSelectionDialog extends StatelessWidget {
 }
 
 class MusicList extends StatelessWidget {
-  final List<SongInfo> titles;
   final MusicSelectionStore store;
 
-  const MusicList({Key key, this.titles, this.store}) : super(key: key);
+  const MusicList({Key key, this.store}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox.fromSize(
       size: Size.fromHeight(400),
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          final title = titles[index];
-
-          return Observer(
-              builder: (context) => CheckboxListTile(
-                    value: store.trackSelected[title.id] ?? false,
-                    title: Text(title.title ?? title.displayName),
-                    onChanged: (newValue) {
-                      return store.trackSelected[title.id] = newValue;
-                    },
-                  ));
-        },
-        itemCount: titles.length,
+      child: Observer(
+        builder: (context) => ListView(
+          shrinkWrap: true,
+          children: store.filteredIds.map(widgetForSongId).toList(),
+        ),
       ),
     );
   }
+
+  Widget widgetForSongId(String id) {
+    final List<SongInfo> titles = store.fullSongInfo;
+    final title = titles.firstWhere((info) => info.id == id);
+
+    return Observer(
+        builder: (context) => CheckboxListTile(
+          value: store.trackSelected[title.id] ?? false,
+          title: Text(title.title ?? title.displayName),
+          onChanged: (newValue) {
+            return store.trackSelected[title.id] = newValue;
+          },
+        ));
+  }
+
 }
