@@ -26,9 +26,11 @@ abstract class _MusicSelectionStore with Store {
 
   @computed
   List<String> get filteredIds {
+    final filter = RegExp(currentSearch, caseSensitive: false);
+
     return fullSongInfo.where((info) =>
-    info.title.contains(currentSearch) ||
-        info.displayName.contains(currentSearch))
+    info.title.contains(filter) ||
+        info.displayName.contains(filter))
         .map((info) => info.id)
         .toList();
   }
