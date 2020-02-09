@@ -135,6 +135,10 @@ abstract class ObservableAlarmBase with Store {
 
   @action
   loadTracks() async {
+    if (musicPaths.length == 0) {
+      trackInfo = ObservableList();
+      return;
+    }
     final songs = await FlutterAudioQuery().getSongsById(ids: musicPaths);
     trackInfo = ObservableList.of(songs);
   }
