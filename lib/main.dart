@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:random_alarm/screens/home_screen/home_screen.dart';
+import 'package:random_alarm/services/alarm_scheduler.dart';
 import 'package:random_alarm/services/file_proxy.dart';
 import 'package:random_alarm/services/life_cycle_listener.dart';
 import 'package:random_alarm/stores/alarm_list/alarm_list.dart';
@@ -20,6 +21,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AlarmScheduler().testAlarm();
+
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
