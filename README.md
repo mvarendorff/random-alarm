@@ -1,6 +1,6 @@
-# playground
+# random_alarm
 
-A new Flutter application.
+An alarm app that lets you configure a list of sounds or music to wake you up.
 
 ## Getting Started
 
