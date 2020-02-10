@@ -1,6 +1,5 @@
 package io.github.geisterfurz007.random_alarm
 
-import dev.flutter.plugins.e2e.E2EPlugin
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry
@@ -14,7 +13,6 @@ class MainActivity: FlutterActivity() {
     println("Hallo? Ist da irgendjemand?")
     val shimPluginRegistry = ShimPluginRegistry(flutterEngine)
     flutterEngine.plugins.add(AndroidAlarmManagerPlugin())
-    flutterEngine.plugins.add(E2EPlugin())
     PathProviderPlugin.registerWith(shimPluginRegistry.registrarFor("io.flutter.plugins.pathprovider.PathProviderPlugin"))
     FlutterAudioQueryPlugin.registerWith(shimPluginRegistry.registrarFor("boaventura.com.devel.br.flutteraudioquery.FlutterAudioQueryPlugin"))
   }
