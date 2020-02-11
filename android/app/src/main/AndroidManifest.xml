@@ -10,7 +10,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="playground"
+        android:label="Random Alarm"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
