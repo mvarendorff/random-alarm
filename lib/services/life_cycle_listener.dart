@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:random_alarm/services/alarm_scheduler.dart';
 import 'package:random_alarm/services/file_proxy.dart';
 import 'package:random_alarm/stores/alarm_list/alarm_list.dart';
 
@@ -12,7 +11,6 @@ class LifeCycleListener extends WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.paused:
-        AlarmScheduler().testAlarm();
         saveAlarms();
         break;
       default:
