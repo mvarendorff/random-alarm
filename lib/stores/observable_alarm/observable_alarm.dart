@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
@@ -102,7 +103,6 @@ abstract class ObservableAlarmBase with Store {
 
   /// Field holding the IDs of the soundfiles that should be loaded
   /// This is exclusively used for JSON serialization
-  @_ObservableListJsonConverter()
   List<String> musicPaths;
 
   @observable
@@ -150,21 +150,11 @@ abstract class ObservableAlarmBase with Store {
   }
 
   updateMusicPaths() {
-    musicPaths = trackInfo.map((info) => info.id).toList();
+    print(trackInfo.map((SongInfo info) => info.id).toList());
+    musicPaths = trackInfo.map((SongInfo info) => info.id).toList();
   }
-}
 
-class _ObservableListJsonConverter
-    implements
-        JsonConverter<ObservableList<ObservableAlarm>,
-            List<Map<String, dynamic>>> {
-  const _ObservableListJsonConverter();
-
-  @override
-  ObservableList<ObservableAlarm> fromJson(List<Map<String, dynamic>> json) =>
-      ObservableList.of(json.map((map) => ObservableAlarm.fromJson(map)));
-
-  @override
-  List<Map<String, dynamic>> toJson(ObservableList<ObservableAlarm> list) =>
-      list.map((alarm) => alarm.toJson()).toList();
+  List<bool> get days {
+    return [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
+  }
 }

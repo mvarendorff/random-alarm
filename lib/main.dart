@@ -16,7 +16,6 @@ void main() async {
   WidgetsBinding.instance.addObserver(LifeCycleListener(list));
 
   runApp(MyApp());
-  AlarmScheduler().testAlarm();
 }
 
 class MyApp extends StatelessWidget {
