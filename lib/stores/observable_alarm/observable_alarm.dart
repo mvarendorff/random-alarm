@@ -7,7 +7,8 @@ part 'observable_alarm.g.dart';
 @JsonSerializable()
 class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
   ObservableAlarm(
-      {name,
+      {id,
+      name,
       hour,
       minute,
       monday,
@@ -21,6 +22,7 @@ class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
       active,
       musicPaths})
       : super(
+            id: id,
             name: name,
             hour: hour,
             minute: minute,
@@ -36,8 +38,9 @@ class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
             musicPaths: musicPaths);
 
   ObservableAlarm.dayList(
-      name, hour, minute, volume, active, weekdays, musicPaths)
+      id, name, hour, minute, volume, active, weekdays, musicPaths)
       : super(
+            id: id,
             name: name,
             hour: hour,
             minute: minute,
@@ -59,6 +62,8 @@ class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
 }
 
 abstract class ObservableAlarmBase with Store {
+  int id;
+
   @observable
   String name;
 
@@ -105,7 +110,8 @@ abstract class ObservableAlarmBase with Store {
   ObservableList<SongInfo> trackInfo = ObservableList();
 
   ObservableAlarmBase(
-      {this.name,
+      {this.id,
+      this.name,
       this.hour,
       this.minute,
       this.monday,
@@ -146,7 +152,6 @@ abstract class ObservableAlarmBase with Store {
   updateMusicPaths() {
     musicPaths = trackInfo.map((info) => info.id).toList();
   }
-
 }
 
 class _ObservableListJsonConverter
