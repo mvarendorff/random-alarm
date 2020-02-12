@@ -16,7 +16,7 @@ class EditAlarmMusic extends StatelessWidget {
         await audioQuery.getSongs(sortType: SongSortType.DISPLAY_NAME);
     showDialog(
         context: context,
-        child: MusicSelectionDialog(alarm: alarm, titles: songs));
+        builder: (context) => MusicSelectionDialog(alarm: alarm, titles: songs));
   }
 
   @override
