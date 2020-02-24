@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
@@ -21,6 +20,7 @@ class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
       sunday,
       volume,
       active,
+      musicIds,
       musicPaths})
       : super(
             id: id,
@@ -36,10 +36,11 @@ class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
             sunday: sunday,
             volume: volume,
             active: active,
+            musicIds: musicIds,
             musicPaths: musicPaths);
 
   ObservableAlarm.dayList(
-      id, name, hour, minute, volume, active, weekdays, musicPaths)
+      id, name, hour, minute, volume, active, weekdays, musicIds, musicPaths)
       : super(
             id: id,
             name: name,
@@ -47,14 +48,15 @@ class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
             minute: minute,
             volume: volume,
             active: active,
-            musicPaths: musicPaths,
+            musicIds: musicIds,
             monday: weekdays[0],
             tuesday: weekdays[1],
             wednesday: weekdays[2],
             thursday: weekdays[3],
             friday: weekdays[4],
             saturday: weekdays[5],
-            sunday: weekdays[6]);
+            sunday: weekdays[6],
+            musicPaths: musicPaths);
 
   factory ObservableAlarm.fromJson(Map<String, dynamic> json) =>
       _$ObservableAlarmFromJson(json);
@@ -103,6 +105,12 @@ abstract class ObservableAlarmBase with Store {
 
   /// Field holding the IDs of the soundfiles that should be loaded
   /// This is exclusively used for JSON serialization
+  List<String> musicIds;
+
+  /// Field holding the paths of the soundfiles that should be loaded.
+  /// musicIds cannot be used in the alarm callback because of a weird
+  /// interaction between flutter_audio_query and android_alarm_manager
+  /// See Stack Overflow post here: https://stackoverflow.com/q/60203223/6707985
   List<String> musicPaths;
 
   @observable
@@ -123,6 +131,7 @@ abstract class ObservableAlarmBase with Store {
       this.sunday,
       this.volume,
       this.active,
+      this.musicIds,
       this.musicPaths});
 
   @action
@@ -141,17 +150,17 @@ abstract class ObservableAlarmBase with Store {
 
   @action
   loadTracks() async {
-    if (musicPaths.length == 0) {
+    if (musicIds.length == 0) {
       trackInfo = ObservableList();
       return;
     }
-    final songs = await FlutterAudioQuery().getSongsById(ids: musicPaths);
+    final songs = await FlutterAudioQuery().getSongsById(ids: musicIds);
     trackInfo = ObservableList.of(songs);
   }
 
   updateMusicPaths() {
-    print(trackInfo.map((SongInfo info) => info.id).toList());
-    musicPaths = trackInfo.map((SongInfo info) => info.id).toList();
+    musicIds = trackInfo.map((SongInfo info) => info.id).toList();
+    musicPaths = trackInfo.map((SongInfo info) => info.filePath).toList();
   }
 
   List<bool> get days {

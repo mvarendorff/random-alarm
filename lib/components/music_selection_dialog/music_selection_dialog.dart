@@ -52,7 +52,7 @@ class MusicSelectionDialog extends StatelessWidget {
                     final newSelected = store.trackSelected.entries
                         .where((entry) => entry.value)
                         .map((entry) => entry.key);
-                    alarm.musicPaths = ObservableList.of(newSelected);
+                    alarm.musicIds = ObservableList.of(newSelected);
                     alarm.loadTracks();
                     return Navigator.pop(context);
                   },
