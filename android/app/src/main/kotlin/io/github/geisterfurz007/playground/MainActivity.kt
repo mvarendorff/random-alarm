@@ -1,11 +1,11 @@
 package io.github.geisterfurz007.playground
 
-import androidx.annotation.NonNull;
-import android.os.Bundle;
-import android.os.Build;
-import android.content.Context;
-import android.app.KeyguardManager;
-import android.view.WindowManager;
+import android.app.KeyguardManager
+import android.content.Context
+import android.os.Build
+import android.os.Bundle
+import android.view.WindowManager
+import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugins.GeneratedPluginRegistrant
@@ -13,7 +13,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant
 class MainActivity: FlutterActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
@@ -27,6 +27,6 @@ class MainActivity: FlutterActivity() {
     }
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
-        GeneratedPluginRegistrant.registerWith(flutterEngine);
+        GeneratedPluginRegistrant.registerWith(flutterEngine)
     }
 }
