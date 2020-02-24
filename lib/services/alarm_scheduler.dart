@@ -16,13 +16,13 @@ class AlarmScheduler {
   Future<void> scheduleAlarm(ObservableAlarm alarm) async {
     final days = alarm.days;
 
-    final scheduleId = (alarm.id - 1) * 7;
+    final scheduleId = alarm.id * 7;
     for (var i = 0; i < 7; i++) {
       if (days[i]) {
         final targetDateTime = nextWeekday(i + 1, alarm.hour, alarm.minute);
         print('Scheduling new alarm for $targetDateTime!');
         await AndroidAlarmManager.oneShotAt(
-            targetDateTime, scheduleId + i, callback);
+            targetDateTime, scheduleId + i, callback, alarmClock: true);
       }
     }
   }

@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
             onPressed: () {
               TimeOfDay tod = TimeOfDay.fromDateTime(DateTime.now());
               final newAlarm = ObservableAlarm.dayList(
-                alarms.alarms.length + 1,
+                alarms.alarms.length,
                 'New Alarm',
                 tod.hour,
                 tod.minute,
