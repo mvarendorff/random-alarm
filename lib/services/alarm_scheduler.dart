@@ -8,6 +8,7 @@ import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
 //TODO unschedule if alarm is turned off
 //TODO Reschedule if days are changed
 class AlarmScheduler {
+
   /*
     To wake up the device and run something on top of the lockscreen,
     this currently requires the hack from here to be implemented:
@@ -49,17 +50,17 @@ class AlarmScheduler {
   }
 
   static void callback(int id) async {
-    //Load selected paths
     List<ObservableAlarm> alarms = await JsonFileStorage().readList();
 
     final alarmId = callbackToAlarmId(id);
+    print('Attemping to load the alarm with ID $alarmId');
+    alarms.map((alarm) => alarm.id).forEach((id) => print("Available ID: $id"));
 
     final alarm = alarms.firstWhere((alarm) => alarm.id == alarmId);
-    await alarm.loadTracks();
-    final selectedPaths = alarm.trackInfo;
+    final paths = alarm.musicPaths;
 
-    final entry = Random().nextInt(selectedPaths.length);
-    final path = selectedPaths[entry].filePath;
+    final entry = Random().nextInt(paths.length);
+    final path = paths[entry];
 
     print("Selected path: $path");
 
