@@ -75,6 +75,6 @@ class AlarmScheduler {
   /// in internal storage. To do so, we can assign a range of 7 per alarm and use ceil to get to
   /// get the alarm ID to access the list of songs that could be played
   static int callbackToAlarmId(int callbackId) {
-    return (callbackId / 7).ceil();
+    return (callbackId / 7).floor();
   }
 }
