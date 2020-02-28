@@ -1,6 +1,11 @@
-# playground
+# Random Alarm
 
-A new Flutter application.
+An alarm app that lets you configure a list of sounds or music to wake you up with a random one each morning!
+
+# Important note!
+
+This project requires a patch to be made in one of the libraries to run properly.
+The required changes are described in https://github.com/flutter/flutter/issues/30555#issuecomment-501597824 (path may vary due to a different version being installed)
 
 ## Getting Started
 
