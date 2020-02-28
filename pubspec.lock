@@ -263,6 +263,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.4"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.16.1"
   io:
     dependency: transitive
     description:
@@ -443,6 +450,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slide_button:
+    dependency: "direct main"
+    description:
+      name: slide_button
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.8"
   source_gen:
     dependency: transitive
     description:
