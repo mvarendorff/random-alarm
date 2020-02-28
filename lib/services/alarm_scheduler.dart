@@ -1,13 +1,19 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:random_alarm/services/file_proxy.dart';
 import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
 
 //TODO unschedule if alarm is turned off
 //TODO Reschedule if days are changed
 class AlarmScheduler {
+  void testAlarm() async {
+    await AndroidAlarmManager.oneShot(Duration(seconds: 5), 0, callback);
+  }
 
   /*
     To wake up the device and run something on top of the lockscreen,
@@ -21,9 +27,9 @@ class AlarmScheduler {
     for (var i = 0; i < 7; i++) {
       if (days[i]) {
         final targetDateTime = nextWeekday(i + 1, alarm.hour, alarm.minute);
-        print('Scheduling new alarm for $targetDateTime!');
         await AndroidAlarmManager.oneShotAt(
-            targetDateTime, scheduleId + i, callback, alarmClock: true);
+            targetDateTime, scheduleId + i, callback,
+            alarmClock: true, rescheduleOnReboot: true);
       }
     }
   }
@@ -50,13 +56,18 @@ class AlarmScheduler {
   }
 
   static void callback(int id) async {
+    final alarmId = callbackToAlarmId(id);
+    createAlarmFlag(alarmId);
+
     List<ObservableAlarm> alarms = await JsonFileStorage().readList();
 
-    final alarmId = callbackToAlarmId(id);
     print('Attemping to load the alarm with ID $alarmId');
     alarms.map((alarm) => alarm.id).forEach((id) => print("Available ID: $id"));
 
-    final alarm = alarms.firstWhere((alarm) => alarm.id == alarmId);
+    final alarm =
+        alarms.firstWhere((alarm) => alarm.id == alarmId, orElse: () => null);
+    if (alarm == null) return; //Just for testing for now.
+
     final paths = alarm.musicPaths;
 
     final entry = Random().nextInt(paths.length);
@@ -67,7 +78,9 @@ class AlarmScheduler {
     //If empty, get default ringtone
     //Pick a random path, pass it to the player; for testing just print it
     AudioPlayer player = AudioPlayer();
+    print('Started playing audio');
     player.play(path, isLocal: true, volume: alarm.volume);
+    pollForAlarmOff(player, alarmId);
   }
 
   /// Because each alarm might need to be able to schedule up to 7 android alarms (for each weekday)
@@ -76,5 +89,39 @@ class AlarmScheduler {
   /// get the alarm ID to access the list of songs that could be played
   static int callbackToAlarmId(int callbackId) {
     return (callbackId / 7).floor();
+  }
+
+  /// Creates a flag file that the main isolate can find on life cycle change
+  /// For now just abusing the FileProxy class for testing
+  static void createAlarmFlag(int id) async {
+    print('Creating a new alarm flag for ID $id');
+    final dir = await getApplicationDocumentsDirectory();
+    JsonFileStorage.toFile(File(dir.path + "/$id.alarm")).writeList([]);
+  }
+
+  /// Method that runs polls until one of the following things happens:
+  ///  - The player emits a completion event
+  ///  - A file called <id>.disable is found in getApplicationDocumentsDirectory
+  static void pollForAlarmOff(AudioPlayer player, int id) async {
+    var running = true;
+    final dir = await getApplicationDocumentsDirectory();
+    final searchPath = '$id.disable';
+
+    player.onPlayerCompletion.listen((data) => running = false);
+
+    while (running) {
+      final foundFile = await dir
+          .list()
+          .map((entry) => entry.path)
+          .any((path) => basename(path) == searchPath);
+
+      if (foundFile) {
+        player.stop();
+        File(dir.path + "/$searchPath").delete();
+        running = false;
+      }
+
+      sleep(Duration(seconds: 1));
+    }
   }
 }
