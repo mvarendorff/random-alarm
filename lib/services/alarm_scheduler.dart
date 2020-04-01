@@ -57,54 +57,9 @@ class AlarmScheduler {
   }
 
   static void callback(int id) async {
-    final extPath = await getExternalStorageDirectory().then((dir) => dir.path);
     final alarmId = callbackToAlarmId(id);
 
-    print('External Path under $extPath');
-    final file = File("$extPath/callbacklog_$alarmId.log");
-
-    if (file.existsSync()) {
-      file.deleteSync();
-    }
-
-    file.createSync();
-
-    file.writeAsString("Callback with ID $id called; working with alarm ID $alarmId!\n", mode: FileMode.append);
-
     createAlarmFlag(alarmId);
-
-    List<ObservableAlarm> alarms = await JsonFileStorage().readList();
-
-    print('Attemping to load the alarm with ID $alarmId');
-    alarms.map((alarm) => alarm.id).forEach((id) => print("Available ID: $id"));
-
-    final alarm =
-        alarms.firstWhere((alarm) => alarm.id == alarmId, orElse: () => null);
-    if (alarm == null) return; //Just for testing for now.
-
-    file.writeAsString("Alarm details: ${alarm.toJson().toString()}\n", mode: FileMode.append);
-    file.writeAsString("Current time: ${DateTime.now().hour}:${DateTime.now().minute}\n", mode: FileMode.append);
-
-    final paths = alarm.musicPaths;
-
-    final entry = Random().nextInt(paths.length);
-    final path = paths[entry];
-
-    print("Selected path: $path");
-
-    //If empty, get default ringtone
-    //Pick a random path, pass it to the player; for testing just print it
-    AudioPlayer player = AudioPlayer();
-    print('Started playing audio');
-    player.play(path, isLocal: true, volume: 1.0);
-
-    file.writeAsString("Looking for disable file under ${alarm.id}.disable\n", mode: FileMode.append);
-    pollForAlarmOff(player, alarmId);
-  }
-
-  static Future<int> getNewVolume(double percentage) async {
-    final max = await Volume.getMaxVol;
-    return (max * percentage).toInt();
   }
 
   /// Because each alarm might need to be able to schedule up to 7 android alarms (for each weekday)
@@ -123,29 +78,4 @@ class AlarmScheduler {
     JsonFileStorage.toFile(File(dir.path + "/$id.alarm")).writeList([]);
   }
 
-  /// Method that runs polls until one of the following things happens:
-  ///  - The player emits a completion event
-  ///  - A file called <id>.disable is found in getApplicationDocumentsDirectory
-  static void pollForAlarmOff(AudioPlayer player, int id) async {
-    var running = true;
-    final dir = await getApplicationDocumentsDirectory();
-    final searchPath = '$id.disable';
-
-    player.onPlayerCompletion.listen((data) => running = false);
-
-    while (running) {
-      final foundFile = await dir
-          .list()
-          .map((entry) => entry.path)
-          .any((path) => basename(path) == searchPath);
-
-      if (foundFile) {
-        player.stop();
-        File(dir.path + "/$searchPath").delete();
-        running = false;
-      }
-
-      sleep(Duration(seconds: 1));
-    }
-  }
 }
