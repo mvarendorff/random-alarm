@@ -499,6 +499,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  system_shortcuts:
+    dependency: transitive
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "5831feae8a04eea39d109366a8b57683ec26d7fc"
+      url: "https://github.com/tmarkmann/SystemShortcutsFlutter.git"
+    source: git
+    version: "0.2.0"
   term_glyph:
     dependency: transitive
     description:
@@ -541,6 +550,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
+  volume:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "74f4d553d7b7ce14f52bb6de75e9555afcffca82"
+      url: "https://github.com/tmarkmann/Volume_Flutter.git"
+    source: git
+    version: "0.1.0"
   watcher:
     dependency: transitive
     description:

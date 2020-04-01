@@ -6,9 +6,28 @@ import 'package:path_provider/path_provider.dart';
 import 'package:random_alarm/stores/alarm_status/alarm_status.dart';
 
 class AlarmPollingWorker {
+  static AlarmPollingWorker _instance = AlarmPollingWorker._();
+
+  factory AlarmPollingWorker() {
+    return _instance;
+  }
+
+  AlarmPollingWorker._();
+
+  bool running = false;
+
   void createPollingWorker() {
+    if (running) {
+      //TODO Might be intended to run it again with 60 more iterations?
+      // Probably have to figure out a way to address that.
+      print('Worker is already running, not creating another one!');
+      return;
+    }
+
+    running = true;
     poller(60).then((alarmId) {
-      if (alarmId != null) {
+      running = false;
+      if (alarmId != null && AlarmStatus().alarmId == null) {
         AlarmStatus().isAlarm = true;
         AlarmStatus().alarmId = int.parse(alarmId);
         cleanUpAlarmFiles();
@@ -17,13 +36,13 @@ class AlarmPollingWorker {
   }
 
   /// Polling function checking for .alarm files in getApplicationDocumentsDirectory()
-  /// every second for #iterations iterations.
+  /// every 10th of a for #iterations iterations.
   Future<String> poller(int iterations) async {
     for (int i = 0; i < iterations; i++) {
       final foundFiles = await findFiles();
       if (foundFiles.length > 0) return foundFiles[0];
 
-      sleep(Duration(seconds: 1));
+      sleep(Duration(milliseconds: 100));
     }
 
     return null;
@@ -42,6 +61,7 @@ class AlarmPollingWorker {
   }
 
   void cleanUpAlarmFiles() async {
+    print('Cleaning up generated .alarm files!');
     final dir = await getApplicationDocumentsDirectory();
     dir
         .list()

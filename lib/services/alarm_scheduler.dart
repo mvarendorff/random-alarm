@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:random_alarm/services/file_proxy.dart';
 import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
+import 'package:volume/volume.dart';
 
 //TODO unschedule if alarm is turned off
 //TODO Reschedule if days are changed
@@ -56,7 +57,20 @@ class AlarmScheduler {
   }
 
   static void callback(int id) async {
+    final extPath = await getExternalStorageDirectory().then((dir) => dir.path);
     final alarmId = callbackToAlarmId(id);
+
+    print('External Path under $extPath');
+    final file = File("$extPath/callbacklog_$alarmId.log");
+
+    if (file.existsSync()) {
+      file.deleteSync();
+    }
+
+    file.createSync();
+
+    file.writeAsString("Callback with ID $id called; working with alarm ID $alarmId!\n", mode: FileMode.append);
+
     createAlarmFlag(alarmId);
 
     List<ObservableAlarm> alarms = await JsonFileStorage().readList();
@@ -67,6 +81,9 @@ class AlarmScheduler {
     final alarm =
         alarms.firstWhere((alarm) => alarm.id == alarmId, orElse: () => null);
     if (alarm == null) return; //Just for testing for now.
+
+    file.writeAsString("Alarm details: ${alarm.toJson().toString()}\n", mode: FileMode.append);
+    file.writeAsString("Current time: ${DateTime.now().hour}:${DateTime.now().minute}\n", mode: FileMode.append);
 
     final paths = alarm.musicPaths;
 
@@ -79,8 +96,15 @@ class AlarmScheduler {
     //Pick a random path, pass it to the player; for testing just print it
     AudioPlayer player = AudioPlayer();
     print('Started playing audio');
-    player.play(path, isLocal: true, volume: alarm.volume);
+    player.play(path, isLocal: true, volume: 1.0);
+
+    file.writeAsString("Looking for disable file under ${alarm.id}.disable\n", mode: FileMode.append);
     pollForAlarmOff(player, alarmId);
+  }
+
+  static Future<int> getNewVolume(double percentage) async {
+    final max = await Volume.getMaxVol;
+    return (max * percentage).toInt();
   }
 
   /// Because each alarm might need to be able to schedule up to 7 android alarms (for each weekday)

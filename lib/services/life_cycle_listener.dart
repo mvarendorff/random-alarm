@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:random_alarm/services/alarm_polling_isolate_manager.dart';
+import 'package:random_alarm/services/alarm_polling_worker.dart';
 import 'package:random_alarm/services/file_proxy.dart';
 import 'package:random_alarm/stores/alarm_list/alarm_list.dart';
 
@@ -12,6 +12,7 @@ class LifeCycleListener extends WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
         saveAlarms();
         break;
       case AppLifecycleState.resumed:
