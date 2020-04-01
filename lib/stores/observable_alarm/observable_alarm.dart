@@ -154,6 +154,12 @@ abstract class ObservableAlarmBase with Store {
       trackInfo = ObservableList();
       return;
     }
+
+    // Workaround for https://github.com/sc4v3ng3r/flutter_audio_query/issues/16
+    if (musicIds.length == 1) {
+      musicIds.add("");
+    }
+
     final songs = await FlutterAudioQuery().getSongsById(ids: musicIds);
     trackInfo = ObservableList.of(songs);
   }
