@@ -6,6 +6,7 @@ import 'package:random_alarm/components/bottom_add_button/bottom_add_button.dart
 import 'package:random_alarm/components/default_container/default_container.dart';
 import 'package:random_alarm/screens/edit_alarm/edit_alarm.dart';
 import 'package:random_alarm/services/alarm_list_manager.dart';
+import 'package:random_alarm/services/alarm_scheduler.dart';
 import 'package:random_alarm/stores/alarm_list/alarm_list.dart';
 import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
 
@@ -30,7 +31,16 @@ class HomeScreen extends StatelessWidget {
               builder: (context) => ListView.separated(
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return AlarmItem(alarm: alarms.alarms[index], manager: _manager);
+                  final alarm = alarms.alarms[index];
+
+                  return Dismissible(
+                    key: Key(alarm.id.toString()),
+                    child: AlarmItem(alarm: alarm, manager: _manager),
+                    onDismissed: (_) {
+                      AlarmScheduler().clearAlarm(alarm);
+                      alarms.alarms.removeAt(index);
+                    },
+                  );
                 },
                 itemCount: alarms.alarms.length,
                 separatorBuilder: (context, index) => const Divider(),

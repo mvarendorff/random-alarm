@@ -6,8 +6,11 @@ import 'package:random_alarm/services/file_proxy.dart';
 import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
 
 class AlarmScheduler {
-  void testAlarm() async {
-    await AndroidAlarmManager.oneShot(Duration(seconds: 5), 0, callback);
+
+  clearAlarm(ObservableAlarm alarm) {
+    for (var i = 0; i < 7; i++) {
+      AndroidAlarmManager.cancel(alarm.id * 7 + i);
+    }
   }
 
   /*
