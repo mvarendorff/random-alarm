@@ -5,18 +5,22 @@ import 'package:random_alarm/screens/edit_alarm/components/edit_alarm_head.dart'
 import 'package:random_alarm/screens/edit_alarm/components/edit_alarm_music.dart';
 import 'package:random_alarm/screens/edit_alarm/components/edit_alarm_slider.dart';
 import 'package:random_alarm/screens/edit_alarm/components/edit_alarm_time.dart';
+import 'package:random_alarm/services/alarm_list_manager.dart';
 import 'package:random_alarm/services/alarm_scheduler.dart';
 import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarm extends StatelessWidget {
   final ObservableAlarm alarm;
+  final AlarmListManager manager;
 
-  EditAlarm({this.alarm});
+  EditAlarm({this.alarm, this.manager});
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        print('$alarm');
+        await manager.saveAlarm(alarm);
         await AlarmScheduler().scheduleAlarm(alarm);
         return true;
       },

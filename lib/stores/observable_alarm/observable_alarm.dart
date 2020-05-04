@@ -172,4 +172,9 @@ abstract class ObservableAlarmBase with Store {
   List<bool> get days {
     return [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
   }
+
+  // Good enough for debugging for now
+  toString() {
+    return "active: $active, music: $musicPaths";
+  }
 }
