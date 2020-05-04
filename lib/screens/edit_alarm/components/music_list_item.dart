@@ -14,6 +14,7 @@ class MusicListItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
+        Icon(Icons.music_note),
         Expanded(child: Text(this.musicInfo.title ?? this.musicInfo.displayName)),
         IconButton(
           icon: Icon(Icons.clear),
