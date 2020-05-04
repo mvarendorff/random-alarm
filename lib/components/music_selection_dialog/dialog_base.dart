@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:mobx/mobx.dart';
-import 'package:random_alarm/stores/music_selection/music_selection.dart';
-import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
-
-import 'music_selection_dialog.dart';
 
 /// Base class for a searchable dialog
 ///
@@ -16,7 +10,6 @@ class DialogBase extends StatelessWidget {
   final Function onSearchChange;
   final Function onSearchClear;
   final Widget child;
-
 
   DialogBase({Key key, this.onDone, this.child, this.onSearchChange, this.onSearchClear})
         : super(key: key);
