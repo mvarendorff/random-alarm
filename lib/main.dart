@@ -18,7 +18,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final alarms = await new JsonFileStorage().readList();
   list.setAlarms(alarms);
-  list.alarms.forEach((alarm) => alarm.loadTracks());
+  list.alarms.forEach((alarm) {
+    alarm.loadTracks();
+    alarm.loadPlaylists();
+  });
   WidgetsBinding.instance.addObserver(LifeCycleListener(list));
 
   runApp(MyApp());

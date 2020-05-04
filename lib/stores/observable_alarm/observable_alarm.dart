@@ -103,6 +103,11 @@ abstract class ObservableAlarmBase with Store {
   @observable
   bool active;
 
+  /// Field holding the IDs of the playlists that were added to the alarm
+  /// This is used for JSON serialization as well as retrieving the music from
+  /// the playlist when the alarm goes off
+  List<String> playlistIds;
+
   /// Field holding the IDs of the soundfiles that should be loaded
   /// This is exclusively used for JSON serialization
   List<String> musicIds;
@@ -116,6 +121,10 @@ abstract class ObservableAlarmBase with Store {
   @observable
   @JsonKey(ignore: true)
   ObservableList<SongInfo> trackInfo = ObservableList();
+
+  @observable
+  @JsonKey(ignore: true)
+  ObservableList<PlaylistInfo> playlistInfo = ObservableList();
 
   ObservableAlarmBase(
       {this.id,
@@ -141,6 +150,12 @@ abstract class ObservableAlarmBase with Store {
   }
 
   @action
+  void removePlaylist(PlaylistInfo info) {
+    playlistInfo.remove(info);
+    playlistInfo = playlistInfo;
+  }
+
+  @action
   void reorder(int oldIndex, int newIndex) {
     final path = trackInfo[oldIndex];
     trackInfo.removeAt(oldIndex);
@@ -162,6 +177,18 @@ abstract class ObservableAlarmBase with Store {
 
     final songs = await FlutterAudioQuery().getSongsById(ids: musicIds);
     trackInfo = ObservableList.of(songs);
+  }
+
+  @action
+  loadPlaylists() async {
+    if (playlistIds.length == 0) {
+      playlistInfo = ObservableList();
+      return;
+    }
+
+    final playlists = await FlutterAudioQuery().getPlaylists();
+    playlistInfo = ObservableList.of(
+        playlists.where((info) => playlistIds.contains(info.id)));
   }
 
   updateMusicPaths() {

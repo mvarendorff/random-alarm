@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
 import 'package:volume/volume.dart';
 
@@ -15,8 +16,23 @@ class MediaHandler {
     Volume.setVol(newVolume);
   }
 
-  playMusic(ObservableAlarm alarm) {
-    final paths = alarm.musicPaths;
+  playMusic(ObservableAlarm alarm) async {
+    final FlutterAudioQuery query = FlutterAudioQuery();
+    final allPlaylists = await query.getPlaylists();
+
+    final playlistSongIds = allPlaylists
+        .where((playlist) => alarm.playlistIds.contains(playlist.id))
+        .map((info) => info.memberIds)
+        .reduce((a, b) => [...a, ...b]);
+
+    // Workaround for the case of a single playlist that has just one song
+    // https://github.com/sc4v3ng3r/flutter_audio_query/issues/16
+    final playlistPaths =
+        (await query.getSongsById(ids: [...playlistSongIds, ""]))
+            .map((info) => info.filePath);
+
+    final paths = [...alarm.musicPaths, ...playlistPaths];
+    print('Paths: $paths');
 
     final entry = Random().nextInt(paths.length);
     final path = paths[entry];
