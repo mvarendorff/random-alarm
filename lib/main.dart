@@ -1,8 +1,4 @@
-import 'dart:io';
-import 'dart:math';
-
 import 'package:android_alarm_manager/android_alarm_manager.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,7 +10,6 @@ import 'package:random_alarm/services/life_cycle_listener.dart';
 import 'package:random_alarm/services/media_handler.dart';
 import 'package:random_alarm/stores/alarm_list/alarm_list.dart';
 import 'package:random_alarm/stores/alarm_status/alarm_status.dart';
-import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
 import 'package:volume/volume.dart';
 
 AlarmList list = AlarmList();
@@ -33,8 +28,6 @@ void main() async {
   final externalPath = (await getExternalStorageDirectory());
   print(externalPath.path);
   if (!externalPath.existsSync()) externalPath.create(recursive: true);
-
-  File(externalPath.path + "/test.test").createSync();
 
   Volume.controlVolume(AudioManager.STREAM_MUSIC);
 }
