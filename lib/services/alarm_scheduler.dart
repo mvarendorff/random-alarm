@@ -1,16 +1,10 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:android_alarm_manager/android_alarm_manager.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:random_alarm/services/file_proxy.dart';
 import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
-import 'package:volume/volume.dart';
 
-//TODO unschedule if alarm is turned off
-//TODO Reschedule if days are changed
 class AlarmScheduler {
   void testAlarm() async {
     await AndroidAlarmManager.oneShot(Duration(seconds: 5), 0, callback);
@@ -26,7 +20,8 @@ class AlarmScheduler {
 
     final scheduleId = alarm.id * 7;
     for (var i = 0; i < 7; i++) {
-      if (days[i]) {
+      await AndroidAlarmManager.cancel(scheduleId + i);
+      if (alarm.active && days[i]) {
         final targetDateTime = nextWeekday(i + 1, alarm.hour, alarm.minute);
         await AndroidAlarmManager.oneShotAt(
             targetDateTime, scheduleId + i, callback,
