@@ -194,6 +194,7 @@ abstract class ObservableAlarmBase with Store {
   updateMusicPaths() {
     musicIds = trackInfo.map((SongInfo info) => info.id).toList();
     musicPaths = trackInfo.map((SongInfo info) => info.filePath).toList();
+    playlistIds = playlistInfo.map((info) => info.id).toList();
   }
 
   List<bool> get days {
