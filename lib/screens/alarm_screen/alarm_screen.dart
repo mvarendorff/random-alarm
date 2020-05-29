@@ -6,6 +6,7 @@ import 'package:random_alarm/services/media_handler.dart';
 import 'package:random_alarm/stores/alarm_status/alarm_status.dart';
 import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
 import 'package:slide_button/slide_button.dart';
+import 'package:wakelock/wakelock.dart';
 
 class AlarmScreen extends StatelessWidget {
   final ObservableAlarm alarm;
@@ -71,6 +72,7 @@ class AlarmScreen extends StatelessWidget {
               )),
               onButtonOpened: () async {
                 mediaHandler.stopAlarm();
+                Wakelock.disable();
 
                 AlarmStatus().isAlarm = false;
                 AlarmStatus().alarmId = null;

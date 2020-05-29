@@ -11,6 +11,7 @@ import 'package:random_alarm/services/media_handler.dart';
 import 'package:random_alarm/stores/alarm_list/alarm_list.dart';
 import 'package:random_alarm/stores/alarm_status/alarm_status.dart';
 import 'package:volume/volume.dart';
+import 'package:wakelock/wakelock.dart';
 
 AlarmList list = AlarmList();
 
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
 
             mediaHandler.changeVolume(alarm);
             mediaHandler.playMusic(alarm);
+            Wakelock.enable();
 
             return AlarmScreen(
                 alarm: alarm,
