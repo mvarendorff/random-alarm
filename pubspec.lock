@@ -539,12 +539,10 @@ packages:
   system_shortcuts:
     dependency: transitive
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "5831feae8a04eea39d109366a8b57683ec26d7fc"
-      url: "https://github.com/tmarkmann/SystemShortcutsFlutter.git"
-    source: git
-    version: "0.2.0"
+      name: system_shortcuts
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   term_glyph:
     dependency: transitive
     description:
@@ -590,12 +588,10 @@ packages:
   volume:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "0f04f91588f97af8610b7922510f2a7f3699e218"
-      url: "https://github.com/geisterfurz007/Volume_Flutter.git"
-    source: git
-    version: "0.1.0"
+      name: volume
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.4"
   wakelock:
     dependency: "direct main"
     description:

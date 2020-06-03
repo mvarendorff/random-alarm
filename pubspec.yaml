@@ -35,10 +35,7 @@ dependencies:
     git:
       url: https://github.com/Timoteohss/slide_button.git
       ref: master
-  volume:
-    git:
-      url: https://github.com/geisterfurz007/Volume_Flutter.git
-      ref: master
+  volume: ^0.1.4
   wakelock: ^0.1.4+1
 
 dev_dependencies:
