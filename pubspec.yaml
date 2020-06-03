@@ -34,7 +34,7 @@ dependencies:
   slide_button: ^0.2.8
   volume:
     git:
-      url: https://github.com/tmarkmann/Volume_Flutter.git
+      url: https://github.com/geisterfurz007/Volume_Flutter.git
       ref: master
   wakelock: ^0.1.4+1
 
