@@ -58,8 +58,8 @@ class HomeScreen extends StatelessWidget {
                 0.3,
                 true,
                 List.filled(7, false),
-                ObservableList.of([]),
-                []
+                ObservableList<String>.of([]),
+                <String>[]
               );
               alarms.alarms.add(newAlarm);
               Navigator.push(
