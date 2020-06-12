@@ -19,9 +19,7 @@ class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
       saturday,
       sunday,
       volume,
-      active,
-      musicIds,
-      musicPaths})
+      active})
       : super(
             id: id,
             name: name,
@@ -35,9 +33,7 @@ class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
             saturday: saturday,
             sunday: sunday,
             volume: volume,
-            active: active,
-            musicIds: musicIds,
-            musicPaths: musicPaths);
+            active: active);
 
   ObservableAlarm.dayList(
       id, name, hour, minute, volume, active, weekdays, musicIds, musicPaths)
