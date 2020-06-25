@@ -7,8 +7,12 @@ import 'package:random_alarm/components/default_container/default_container.dart
 import 'package:random_alarm/screens/edit_alarm/edit_alarm.dart';
 import 'package:random_alarm/services/alarm_list_manager.dart';
 import 'package:random_alarm/services/alarm_scheduler.dart';
+import 'package:random_alarm/services/spotify/spotify_authentication.dart';
 import 'package:random_alarm/stores/alarm_list/alarm_list.dart';
 import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
+import 'package:spotify/spotify.dart';
+
+import '../../components/bottom_add_button/bottom_add_button.dart';
 
 class HomeScreen extends StatelessWidget {
   final AlarmList alarms;
@@ -46,6 +50,14 @@ class HomeScreen extends StatelessWidget {
                 separatorBuilder: (context, index) => const Divider(),
               ),
             ),
+          ),
+          BottomAddButton(
+            onPressed: () async {
+              final api = await SpotifyAuthentication().loadSpotifyApi();
+              api.playlists.me.all().then((playlists) async {
+                playlists.forEach((element) {print(element.name);});
+              });
+            },
           ),
           BottomAddButton(
             onPressed: () {

@@ -76,3 +76,9 @@
 
 # build_runner generated files
 *.g.dart
+
+# env variables
+assets/.env
+/android/spotify-app-remote/
+/android/spotify-auth/
+/android/app/lib
