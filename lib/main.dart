@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:random_alarm/screens/alarm_screen/alarm_screen.dart';
 import 'package:random_alarm/screens/home_screen/home_screen.dart';
 import 'package:random_alarm/services/alarm_polling_worker.dart';
+import 'package:random_alarm/services/error_handler.dart';
 import 'package:random_alarm/services/file_proxy.dart';
 import 'package:random_alarm/services/life_cycle_listener.dart';
 import 'package:random_alarm/services/media_handler.dart';
@@ -32,6 +33,8 @@ void main() async {
   final externalPath = (await getExternalStorageDirectory());
   print(externalPath.path);
   if (!externalPath.existsSync()) externalPath.create(recursive: true);
+
+  ErrorHandler().registerHandler();
 
   Volume.controlVolume(AudioManager.STREAM_MUSIC);
 }
