@@ -42,7 +42,7 @@ class AlarmPollingWorker {
       final foundFiles = await findFiles();
       if (foundFiles.length > 0) return foundFiles[0];
 
-      sleep(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
     }
 
     return null;
