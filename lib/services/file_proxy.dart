@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
+import '../stores/observable_alarm/observable_alarm.dart';
 import 'package:path_provider/path_provider.dart';
 
 class JsonFileStorage {
-
   File _file;
 
   JsonFileStorage();
@@ -24,7 +23,7 @@ class JsonFileStorage {
       List<dynamic> parsedList = jsonDecode(content) as List;
       return parsedList.map((map) => ObservableAlarm.fromJson(map)).toList();
     }
-    return List();
+    return [];
   }
 
   Future<void> _ensureFileSet() async {
@@ -41,5 +40,4 @@ class JsonFileStorage {
     final dir = await getApplicationDocumentsDirectory();
     return dir.path;
   }
-
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
+import '../../../stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarmDays extends StatelessWidget {
-  final ObservableAlarm alarm;
+  final ObservableAlarm /*!*/ alarm;
 
   const EditAlarmDays({Key key, this.alarm}) : super(key: key);
 
@@ -55,9 +55,9 @@ class EditAlarmDays extends StatelessWidget {
 }
 
 class WeekDayToggle extends StatelessWidget {
-  final Function onToggle;
-  final bool current;
-  final String text;
+  final void Function(bool) /*!*/ onToggle;
+  final bool /*!*/ current;
+  final String /*!*/ text;
 
   const WeekDayToggle({Key key, this.onToggle, this.current, this.text})
       : super(key: key);
@@ -73,8 +73,7 @@ class WeekDayToggle extends StatelessWidget {
         size: Size.fromRadius(size),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: new BorderRadius.circular(size),
-              color: blobColor),
+              borderRadius: new BorderRadius.circular(size), color: blobColor),
           child: Center(
               child: Text(
             this.text,

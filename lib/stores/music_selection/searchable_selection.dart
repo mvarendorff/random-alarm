@@ -1,9 +1,9 @@
-import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:mobx/mobx.dart';
 
 part 'searchable_selection.g.dart';
 
-class SearchableSelectionStore<T> = _SearchableSelectionStore<T> with _$SearchableSelectionStore<T>;
+class SearchableSelectionStore<T> = _SearchableSelectionStore<T>
+    with _$SearchableSelectionStore<T>;
 
 typedef StringMapping<T> = String Function(T a);
 typedef Filter<T> = bool Function(T a, String search);
@@ -15,7 +15,12 @@ abstract class _SearchableSelectionStore<T> with Store {
   final StringMapping<T> valueMapping;
   final Filter<T> filter;
 
-  _SearchableSelectionStore(this.availableItems, List<String> selectedItems, this.valueMapping, this.filter,) {
+  _SearchableSelectionStore(
+    this.availableItems,
+    List<String> selectedItems,
+    this.valueMapping,
+    this.filter,
+  ) {
     final selectableItems = availableItems.map(valueMapping).toList();
     itemSelected = ObservableMap();
     selectableItems.forEach((id) {
@@ -25,14 +30,15 @@ abstract class _SearchableSelectionStore<T> with Store {
   }
 
   @observable
-  ObservableMap<String, bool> itemSelected = ObservableMap();
+  ObservableMap<String, bool /*!*/ > itemSelected = ObservableMap();
 
   @observable
   String currentSearch = "";
 
   @computed
   List<String> get filteredIds {
-    return availableItems.where((item) => filter(item, currentSearch))
+    return availableItems
+        .where((item) => filter(item, currentSearch))
         .map(valueMapping)
         .toList();
   }

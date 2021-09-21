@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:random_alarm/stores/alarm_status/alarm_status.dart';
+import '../stores/alarm_status/alarm_status.dart';
 
 class AlarmPollingWorker {
   static AlarmPollingWorker _instance = AlarmPollingWorker._();

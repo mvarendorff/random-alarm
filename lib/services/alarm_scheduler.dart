@@ -1,12 +1,11 @@
 import 'dart:io';
 
-import 'package:android_alarm_manager/android_alarm_manager.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:random_alarm/services/file_proxy.dart';
-import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
+import 'file_proxy.dart';
+import '../stores/observable_alarm/observable_alarm.dart';
 
 class AlarmScheduler {
-
   clearAlarm(ObservableAlarm alarm) {
     for (var i = 0; i < 7; i++) {
       AndroidAlarmManager.cancel(alarm.id * 7 + i);
@@ -75,5 +74,4 @@ class AlarmScheduler {
     final dir = await getApplicationDocumentsDirectory();
     JsonFileStorage.toFile(File(dir.path + "/$id.alarm")).writeList([]);
   }
-
 }

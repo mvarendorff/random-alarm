@@ -1,15 +1,15 @@
-import 'package:android_alarm_manager/android_alarm_manager.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:random_alarm/screens/alarm_screen/alarm_screen.dart';
-import 'package:random_alarm/screens/home_screen/home_screen.dart';
-import 'package:random_alarm/services/alarm_polling_worker.dart';
-import 'package:random_alarm/services/file_proxy.dart';
-import 'package:random_alarm/services/life_cycle_listener.dart';
-import 'package:random_alarm/services/media_handler.dart';
-import 'package:random_alarm/stores/alarm_list/alarm_list.dart';
-import 'package:random_alarm/stores/alarm_status/alarm_status.dart';
+import 'screens/alarm_screen/alarm_screen.dart';
+import 'screens/home_screen/home_screen.dart';
+import 'services/alarm_polling_worker.dart';
+import 'services/file_proxy.dart';
+import 'services/life_cycle_listener.dart';
+import 'services/media_handler.dart';
+import 'stores/alarm_list/alarm_list.dart';
+import 'stores/alarm_status/alarm_status.dart';
 import 'package:volume/volume.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -59,9 +59,7 @@ class MyApp extends StatelessWidget {
             mediaHandler.playMusic(alarm);
             Wakelock.enable();
 
-            return AlarmScreen(
-                alarm: alarm,
-                mediaHandler: mediaHandler);
+            return AlarmScreen(alarm: alarm, mediaHandler: mediaHandler);
           }
           return HomeScreen(alarms: list);
         }));

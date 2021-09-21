@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:random_alarm/screens/edit_alarm/edit_alarm.dart';
-import 'package:random_alarm/services/alarm_list_manager.dart';
-import 'package:random_alarm/stores/alarm_list/alarm_list.dart';
-import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
+import '../../screens/edit_alarm/edit_alarm.dart';
+import '../../services/alarm_list_manager.dart';
+import '../../stores/observable_alarm/observable_alarm.dart';
 
 const dates = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
@@ -11,7 +10,8 @@ class AlarmItem extends StatelessWidget {
   final ObservableAlarm alarm;
   final AlarmListManager manager;
 
-  const AlarmItem({Key key, @required this.alarm, this.manager}) : super(key: key);
+  const AlarmItem({Key key, @required this.alarm, @required this.manager})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,8 @@ class AlarmItem extends StatelessWidget {
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => EditAlarm(alarm: this.alarm, manager: manager))),
+              builder: (context) =>
+                  EditAlarm(alarm: this.alarm, manager: manager))),
       child: Observer(
         builder: (context) => Card(
           shape:

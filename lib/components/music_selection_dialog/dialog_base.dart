@@ -6,13 +6,18 @@ import 'package:flutter/material.dart';
 class DialogBase extends StatelessWidget {
   // -- Base
 
-  final Function onDone;
-  final Function onSearchChange;
-  final Function onSearchClear;
-  final Widget child;
+  final VoidCallback /*?*/ onDone;
+  final void Function(String) onSearchChange;
+  final VoidCallback onSearchClear;
+  final Widget /*!*/ child;
 
-  DialogBase({Key key, this.onDone, this.child, this.onSearchChange, this.onSearchClear})
-        : super(key: key);
+  DialogBase(
+      {Key key,
+      this.onDone,
+      this.child,
+      this.onSearchChange,
+      this.onSearchClear})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +31,9 @@ class DialogBase extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Expanded(child: TextField(onChanged: onSearchChange, controller: controller)),
+                Expanded(
+                    child: TextField(
+                        onChanged: onSearchChange, controller: controller)),
                 IconButton(
                   icon: Icon(Icons.clear),
                   onPressed: () {
@@ -39,14 +46,14 @@ class DialogBase extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('Cancel'),
                   onPressed: () => Navigator.pop(context),
                 ),
-                FlatButton(
+                TextButton(
                   child: Text('Done'),
                   onPressed: () {
-                    onDone();
+                    onDone?.call();
                     return Navigator.pop(context);
                   },
                 )
@@ -57,5 +64,4 @@ class DialogBase extends StatelessWidget {
       ),
     );
   }
-
 }

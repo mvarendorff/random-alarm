@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:random_alarm/components/default_container/default_container.dart';
-import 'package:random_alarm/services/media_handler.dart';
-import 'package:random_alarm/stores/alarm_status/alarm_status.dart';
-import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
-import 'package:slide_button/slide_button.dart';
+import '../../components/default_container/default_container.dart';
+import '../../services/media_handler.dart';
+import '../../stores/alarm_status/alarm_status.dart';
+import '../../stores/observable_alarm/observable_alarm.dart';
+import 'package:slide_to_act/slide_to_act.dart';
 import 'package:wakelock/wakelock.dart';
 
 class AlarmScreen extends StatelessWidget {
-  final ObservableAlarm alarm;
-  final MediaHandler mediaHandler;
+  final ObservableAlarm /*!*/ alarm;
+  final MediaHandler /*!*/ mediaHandler;
 
   const AlarmScreen({Key key, this.alarm, this.mediaHandler}) : super(key: key);
 
@@ -58,19 +58,18 @@ class AlarmScreen extends StatelessWidget {
           ),
           ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: SlideButton(
+            child: SlideAction(
               height: 80,
-              slidingChild: Center(
-                  child: Icon(
+              sliderButtonIcon: Icon(
                 Icons.chevron_right,
                 size: 36,
-              )),
-              backgroundChild: Center(
+              ),
+              child: Center(
                   child: Text(
                 'Turn off alarm!',
                 style: TextStyle(fontSize: 26),
               )),
-              onButtonOpened: () async {
+              onSubmit: () async {
                 mediaHandler.stopAlarm();
                 Wakelock.disable();
 
@@ -78,8 +77,8 @@ class AlarmScreen extends StatelessWidget {
                 AlarmStatus().alarmId = null;
                 SystemNavigator.pop();
               },
-              slidingBarColor: Colors.deepPurple,
-              backgroundColor: Colors.deepOrangeAccent,
+              innerColor: Colors.deepPurple,
+              outerColor: Colors.deepOrangeAccent,
             ),
           )
         ],

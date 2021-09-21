@@ -4,11 +4,11 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
+import '../stores/observable_alarm/observable_alarm.dart';
 import 'package:volume/volume.dart';
 
 class MediaHandler {
-  AudioPlayer _currentPlayer;
+  /*late*/ AudioPlayer _currentPlayer;
   int _originalVolume;
 
   changeVolume(ObservableAlarm alarm) async {
@@ -81,7 +81,6 @@ class MediaHandler {
 
   stopAlarm() {
     Volume.setVol(_originalVolume);
-    if (_currentPlayer == null) return;
 
     _currentPlayer.stop();
     _currentPlayer.release();

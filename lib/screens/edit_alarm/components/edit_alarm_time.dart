@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
+import '../../../stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarmTime extends StatelessWidget {
-  final ObservableAlarm alarm;
+  final ObservableAlarm/*!*/ alarm;
 
   const EditAlarmTime({Key key, this.alarm}) : super(key: key);
 
@@ -11,12 +11,14 @@ class EditAlarmTime extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        child: Observer(
-            builder: (context) {
-              final hours = alarm.hour.toString().padLeft(2, '0');
-              final minutes = alarm.minute.toString().padLeft(2, '0');
-              return Text('$hours:$minutes', style: TextStyle(fontSize: 48),);
-            }),
+        child: Observer(builder: (context) {
+          final hours = alarm.hour.toString().padLeft(2, '0');
+          final minutes = alarm.minute.toString().padLeft(2, '0');
+          return Text(
+            '$hours:$minutes',
+            style: TextStyle(fontSize: 48),
+          );
+        }),
         onTap: () async {
           final time = await showTimePicker(
               context: context,

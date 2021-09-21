@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
-import 'package:random_alarm/components/music_selection_dialog/dialog_base.dart';
-import 'package:random_alarm/stores/music_selection/searchable_selection.dart';
-import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
+import 'dialog_base.dart';
+import '../../stores/music_selection/searchable_selection.dart';
+import '../../stores/observable_alarm/observable_alarm.dart';
 
 bool songFilter(SongInfo info, String currentSearch) {
   final filter = RegExp(currentSearch, caseSensitive: false);
@@ -45,7 +45,7 @@ class MusicSelectionDialog extends StatelessWidget {
 }
 
 class MusicList extends StatelessWidget {
-  final SearchableSelectionStore<SongInfo> store;
+  final SearchableSelectionStore<SongInfo>/*!*/ store;
 
   const MusicList({Key key, this.store}) : super(key: key);
 

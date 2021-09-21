@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:random_alarm/components/music_selection_dialog/music_selection_dialog.dart';
-import 'package:random_alarm/components/music_selection_dialog/playlist_selection_dialog.dart';
-import 'package:random_alarm/screens/edit_alarm/components/music_list_item.dart';
-import 'package:random_alarm/screens/edit_alarm/components/playlist_list_item.dart';
-import 'package:random_alarm/stores/observable_alarm/observable_alarm.dart';
+import '../../../components/music_selection_dialog/music_selection_dialog.dart';
+import '../../../components/music_selection_dialog/playlist_selection_dialog.dart';
+import 'music_list_item.dart';
+import 'playlist_list_item.dart';
+import '../../../stores/observable_alarm/observable_alarm.dart';
 
 enum SelectionMode { SINGLE, PLAYLIST }
 
 class EditAlarmMusic extends StatelessWidget {
-  final ObservableAlarm alarm;
+  final ObservableAlarm/*!*/ alarm;
 
   const EditAlarmMusic({Key key, this.alarm}) : super(key: key);
 

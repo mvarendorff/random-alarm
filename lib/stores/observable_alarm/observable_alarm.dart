@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
@@ -7,33 +8,36 @@ part 'observable_alarm.g.dart';
 @JsonSerializable()
 class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
   ObservableAlarm(
-      {id,
-      name,
-      hour,
-      minute,
-      monday,
-      tuesday,
-      wednesday,
-      thursday,
-      friday,
-      saturday,
-      sunday,
-      volume,
-      active})
+      {@required id,
+      @required name,
+      @required hour,
+      @required minute,
+      @required monday,
+      @required tuesday,
+      @required wednesday,
+      @required thursday,
+      @required friday,
+      @required saturday,
+      @required sunday,
+      @required volume,
+      @required active})
       : super(
-            id: id,
-            name: name,
-            hour: hour,
-            minute: minute,
-            monday: monday,
-            tuesday: tuesday,
-            wednesday: wednesday,
-            thursday: thursday,
-            friday: friday,
-            saturday: saturday,
-            sunday: sunday,
-            volume: volume,
-            active: active);
+          id: id,
+          name: name,
+          hour: hour,
+          minute: minute,
+          monday: monday,
+          tuesday: tuesday,
+          wednesday: wednesday,
+          thursday: thursday,
+          friday: friday,
+          saturday: saturday,
+          sunday: sunday,
+          volume: volume,
+          active: active,
+          musicIds: [],
+          musicPaths: [],
+        );
 
   ObservableAlarm.dayList(
       id, name, hour, minute, volume, active, weekdays, musicIds, musicPaths)
@@ -61,58 +65,58 @@ class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
 }
 
 abstract class ObservableAlarmBase with Store {
-  int id;
+  int/*!*/ id;
 
   @observable
-  String name;
+  String/*!*/ name;
 
   @observable
-  int hour;
+  int/*!*/ hour;
 
   @observable
-  int minute;
+  int/*!*/ minute;
 
   @observable
-  bool monday;
+  bool/*!*/ monday;
 
   @observable
-  bool tuesday;
+  bool/*!*/ tuesday;
 
   @observable
-  bool wednesday;
+  bool/*!*/ wednesday;
 
   @observable
-  bool thursday;
+  bool/*!*/ thursday;
 
   @observable
-  bool friday;
+  bool/*!*/ friday;
 
   @observable
-  bool saturday;
+  bool/*!*/ saturday;
 
   @observable
-  bool sunday;
+  bool/*!*/ sunday;
 
   @observable
-  double volume;
+  double/*!*/ volume;
 
   @observable
-  bool active;
+  bool/*!*/ active;
 
   /// Field holding the IDs of the playlists that were added to the alarm
   /// This is used for JSON serialization as well as retrieving the music from
   /// the playlist when the alarm goes off
-  List<String> playlistIds;
+  List<String>/*!*/ playlistIds;
 
   /// Field holding the IDs of the soundfiles that should be loaded
   /// This is exclusively used for JSON serialization
-  List<String> musicIds;
+  List<String>/*!*/ musicIds;
 
   /// Field holding the paths of the soundfiles that should be loaded.
   /// musicIds cannot be used in the alarm callback because of a weird
   /// interaction between flutter_audio_query and android_alarm_manager
   /// See Stack Overflow post here: https://stackoverflow.com/q/60203223/6707985
-  List<String> musicPaths;
+  List<String/*!*/>/*!*/ musicPaths;
 
   @observable
   @JsonKey(ignore: true)
@@ -123,30 +127,30 @@ abstract class ObservableAlarmBase with Store {
   ObservableList<PlaylistInfo> playlistInfo = ObservableList();
 
   ObservableAlarmBase(
-      {this.id,
-      this.name,
-      this.hour,
-      this.minute,
-      this.monday,
-      this.tuesday,
-      this.wednesday,
-      this.thursday,
-      this.friday,
-      this.saturday,
-      this.sunday,
-      this.volume,
-      this.active,
-      this.musicIds,
-      this.musicPaths});
+      {@required this.id,
+      @required this.name,
+      @required this.hour,
+      @required this.minute,
+      @required this.monday,
+      @required this.tuesday,
+      @required this.wednesday,
+      @required this.thursday,
+      @required this.friday,
+      @required this.saturday,
+      @required this.sunday,
+      @required this.volume,
+      @required this.active,
+      @required this.musicIds,
+      @required this.musicPaths});
 
   @action
-  void removeItem(SongInfo info) {
+  void removeItem(SongInfo/*!*/ info) {
     trackInfo.remove(info);
     trackInfo = trackInfo;
   }
 
   @action
-  void removePlaylist(PlaylistInfo info) {
+  void removePlaylist(PlaylistInfo/*!*/ info) {
     playlistInfo.remove(info);
     playlistInfo = playlistInfo;
   }
