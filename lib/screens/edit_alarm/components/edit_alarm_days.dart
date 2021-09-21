@@ -3,9 +3,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../../stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarmDays extends StatelessWidget {
-  final ObservableAlarm /*!*/ alarm;
+  final ObservableAlarm alarm;
 
-  const EditAlarmDays({Key key, this.alarm}) : super(key: key);
+  const EditAlarmDays({Key? key, required this.alarm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +55,11 @@ class EditAlarmDays extends StatelessWidget {
 }
 
 class WeekDayToggle extends StatelessWidget {
-  final void Function(bool) /*!*/ onToggle;
-  final bool /*!*/ current;
-  final String /*!*/ text;
+  final void Function(bool) onToggle;
+  final bool current;
+  final String text;
 
-  const WeekDayToggle({Key key, this.onToggle, this.current, this.text})
+  const WeekDayToggle({Key? key, required this.onToggle, required this.current, required this.text})
       : super(key: key);
 
   @override

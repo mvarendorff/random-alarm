@@ -12,13 +12,13 @@ class PlaylistSelectionDialog extends StatelessWidget {
 
   final SearchableSelectionStore<PlaylistInfo> store;
 
-  PlaylistSelectionDialog({Key key, this.alarm, this.playlists})
+  PlaylistSelectionDialog({Key? key, required this.alarm, required this.playlists})
       : store = SearchableSelectionStore(
             playlists,
             alarm.playlistInfo.map((info) => info.id).toList(),
             (info) => info.id, (info, search) {
           final filter = RegExp(search, caseSensitive: false);
-          return info.name.contains(filter);
+          return info.name!.contains(filter);
         }),
         super(key: key);
 
@@ -44,9 +44,9 @@ class PlaylistSelectionDialog extends StatelessWidget {
 }
 
 class PlaylistList extends StatelessWidget {
-  final SearchableSelectionStore<PlaylistInfo>/*!*/ store;
+  final SearchableSelectionStore<PlaylistInfo> store;
 
-  const PlaylistList({Key key, this.store}) : super(key: key);
+  const PlaylistList({Key? key, required this.store}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +65,9 @@ class PlaylistList extends StatelessWidget {
     return Observer(
         builder: (context) => CheckboxListTile(
               value: store.itemSelected[playlist.id] ?? false,
-              title: Text(playlist.name),
+              title: Text(playlist.name!),
               onChanged: (newValue) {
-                return store.itemSelected[playlist.id] = newValue;
+                return store.itemSelected[playlist.id] = newValue!;
               },
             ));
   }

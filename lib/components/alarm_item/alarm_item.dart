@@ -10,7 +10,7 @@ class AlarmItem extends StatelessWidget {
   final ObservableAlarm alarm;
   final AlarmListManager manager;
 
-  const AlarmItem({Key key, @required this.alarm, @required this.manager})
+  const AlarmItem({Key? key, required this.alarm, required this.manager})
       : super(key: key);
 
   @override
@@ -66,8 +66,8 @@ class DateRow extends StatelessWidget {
   final List<bool> dayEnabled;
 
   DateRow({
-    Key key,
-    this.alarm,
+    Key? key,
+    required this.alarm,
   })  : dayEnabled = [
           alarm.monday,
           alarm.tuesday,

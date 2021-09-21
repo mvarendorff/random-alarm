@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DefaultContainer extends StatelessWidget {
-  final Widget/*!*/ child;
+  final Widget child;
 
-  DefaultContainer({this.child});
+  DefaultContainer({required this.child});
 
   @override
   Widget build(BuildContext context) {

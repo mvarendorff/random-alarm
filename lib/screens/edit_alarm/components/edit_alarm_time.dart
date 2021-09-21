@@ -3,9 +3,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../../stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarmTime extends StatelessWidget {
-  final ObservableAlarm/*!*/ alarm;
+  final ObservableAlarm alarm;
 
-  const EditAlarmTime({Key key, this.alarm}) : super(key: key);
+  const EditAlarmTime({Key? key, required this.alarm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +20,9 @@ class EditAlarmTime extends StatelessWidget {
           );
         }),
         onTap: () async {
-          final time = await showTimePicker(
+          final time = await (showTimePicker(
               context: context,
-              initialTime: TimeOfDay(hour: alarm.hour, minute: alarm.minute));
+              initialTime: TimeOfDay(hour: alarm.hour, minute: alarm.minute)) as FutureOr<TimeOfDay>);
           alarm.hour = time.hour;
           alarm.minute = time.minute;
         },

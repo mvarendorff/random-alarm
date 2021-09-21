@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 class DialogBase extends StatelessWidget {
   // -- Base
 
-  final VoidCallback /*?*/ onDone;
-  final void Function(String) onSearchChange;
-  final VoidCallback onSearchClear;
-  final Widget /*!*/ child;
+  final VoidCallback? onDone;
+  final void Function(String)? onSearchChange;
+  final VoidCallback? onSearchClear;
+  final Widget child;
 
   DialogBase(
-      {Key key,
+      {Key? key,
       this.onDone,
-      this.child,
+      required this.child,
       this.onSearchChange,
       this.onSearchClear})
       : super(key: key);

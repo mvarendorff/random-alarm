@@ -9,10 +9,10 @@ import 'package:slide_to_act/slide_to_act.dart';
 import 'package:wakelock/wakelock.dart';
 
 class AlarmScreen extends StatelessWidget {
-  final ObservableAlarm /*!*/ alarm;
-  final MediaHandler /*!*/ mediaHandler;
+  final ObservableAlarm alarm;
+  final MediaHandler mediaHandler;
 
-  const AlarmScreen({Key key, this.alarm, this.mediaHandler}) : super(key: key);
+  const AlarmScreen({Key? key, required this.alarm, required this.mediaHandler}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

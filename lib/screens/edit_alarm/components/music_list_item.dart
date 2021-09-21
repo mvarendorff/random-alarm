@@ -3,10 +3,10 @@ import 'package:flutter_audio_query/flutter_audio_query.dart';
 import '../../../stores/observable_alarm/observable_alarm.dart';
 
 class MusicListItem extends StatelessWidget {
-  final SongInfo/*!*/ musicInfo;
-  final ObservableAlarm/*!*/ alarm;
+  final SongInfo musicInfo;
+  final ObservableAlarm alarm;
 
-  const MusicListItem({Key key, this.musicInfo, this.alarm}) : super(key: key);
+  const MusicListItem({Key? key, required this.musicInfo, required this.alarm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class MusicListItem extends StatelessWidget {
       children: <Widget>[
         Icon(Icons.music_note),
         Expanded(
-            child: Text(this.musicInfo.title ?? this.musicInfo.displayName)),
+            child: Text(this.musicInfo.title ?? this.musicInfo.displayName!)),
         IconButton(
           icon: Icon(Icons.clear),
           onPressed: () => this.alarm.removeItem(musicInfo),

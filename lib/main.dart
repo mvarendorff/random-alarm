@@ -1,4 +1,5 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,13 +24,13 @@ void main() async {
     alarm.loadTracks();
     alarm.loadPlaylists();
   });
-  WidgetsBinding.instance.addObserver(LifeCycleListener(list));
+  WidgetsBinding.instance!.addObserver(LifeCycleListener(list));
 
   runApp(MyApp());
   await AndroidAlarmManager.initialize();
   AlarmPollingWorker().createPollingWorker();
 
-  final externalPath = (await getExternalStorageDirectory());
+  final externalPath = (await (getExternalStorageDirectory() as FutureOr<Directory>));
   print(externalPath.path);
   if (!externalPath.existsSync()) externalPath.create(recursive: true);
 
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           if (status.isAlarm) {
             final id = status.alarmId;
             final alarm = list.alarms
-                .firstWhere((alarm) => alarm.id == id, orElse: () => null);
+                .firstWhereOrNull((alarm) => alarm.id == id)!;
 
             MediaHandler mediaHandler = MediaHandler();
 

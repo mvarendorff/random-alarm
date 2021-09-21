@@ -13,7 +13,7 @@ class EditAlarm extends StatelessWidget {
   final ObservableAlarm alarm;
   final AlarmListManager manager;
 
-  EditAlarm({@required this.alarm, @required this.manager});
+  EditAlarm({required this.alarm, required this.manager});
 
   @override
   Widget build(BuildContext context) {

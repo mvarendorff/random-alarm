@@ -10,9 +10,9 @@ import '../../../stores/observable_alarm/observable_alarm.dart';
 enum SelectionMode { SINGLE, PLAYLIST }
 
 class EditAlarmMusic extends StatelessWidget {
-  final ObservableAlarm/*!*/ alarm;
+  final ObservableAlarm alarm;
 
-  const EditAlarmMusic({Key key, this.alarm}) : super(key: key);
+  const EditAlarmMusic({Key? key, required this.alarm}) : super(key: key);
 
   void openSingleSelectionDialog(context) async {
     final audioQuery = FlutterAudioQuery();
@@ -32,7 +32,7 @@ class EditAlarmMusic extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) =>
-          PlaylistSelectionDialog(alarm: alarm, playlists: playlists),
+          PlaylistSelectionDialog(alarm: alarm, playlists: playlists!),
     );
   }
 
@@ -58,7 +58,7 @@ class EditAlarmMusic extends StatelessWidget {
                   {"text": "Playlist", "value": SelectionMode.PLAYLIST},
                 ]
                     .map((item) => PopupMenuItem<SelectionMode>(
-                        value: item["value"], child: Text(item["text"])))
+                        value: item["value"] as SelectionMode?, child: Text(item["text"] as String)))
                     .toList();
               },
               onSelected: (selection) {

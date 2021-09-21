@@ -11,9 +11,9 @@ import '../../stores/alarm_list/alarm_list.dart';
 import '../../stores/observable_alarm/observable_alarm.dart';
 
 class HomeScreen extends StatelessWidget {
-  final AlarmList/*!*/ alarms;
+  final AlarmList alarms;
 
-  const HomeScreen({Key key, this.alarms}) : super(key: key);
+  const HomeScreen({Key? key, required this.alarms}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -8,8 +8,8 @@ import '../stores/observable_alarm/observable_alarm.dart';
 import 'package:volume/volume.dart';
 
 class MediaHandler {
-  /*late*/ AudioPlayer _currentPlayer;
-  int _originalVolume;
+  late AudioPlayer _currentPlayer;
+  late int _originalVolume;
 
   changeVolume(ObservableAlarm alarm) async {
     _originalVolume = await Volume.getVol;
@@ -20,7 +20,7 @@ class MediaHandler {
 
   getRandomPath(ObservableAlarm alarm) async {
     final FlutterAudioQuery query = FlutterAudioQuery();
-    final allPlaylists = await query.getPlaylists();
+    final allPlaylists = await (query.getPlaylists() as FutureOr<List<PlaylistInfo>>);
 
     final playlistSongIdChunks = allPlaylists
         .where((playlist) => alarm.playlistIds.contains(playlist.id))
@@ -28,7 +28,7 @@ class MediaHandler {
 
     var playlistSongIds;
     if (playlistSongIdChunks.length > 1)
-      playlistSongIds = playlistSongIdChunks.reduce((a, b) => [...a, ...b]);
+      playlistSongIds = playlistSongIdChunks.reduce((a, b) => [...a!, ...b!]);
     else if (playlistSongIdChunks.length == 1)
       playlistSongIds = playlistSongIdChunks.toList()[0];
     else
@@ -53,7 +53,7 @@ class MediaHandler {
     bool subscribed = false;
     _currentPlayer = AudioPlayer();
 
-    StreamSubscription subscription;
+    late StreamSubscription subscription;
     subscription = _currentPlayer.onDurationChanged.listen((duration) {
       final seconds = duration.inSeconds;
       if (seconds < 30) {

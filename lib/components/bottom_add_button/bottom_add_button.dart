@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class BottomAddButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const BottomAddButton({Key key, @required this.onPressed}) : super(key: key);
+  const BottomAddButton({Key? key, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -3,9 +3,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../../stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarmHead extends StatelessWidget {
-  final ObservableAlarm/*!*/ alarm;
+  final ObservableAlarm alarm;
 
-  EditAlarmHead({this.alarm});
+  EditAlarmHead({required this.alarm});
 
   @override
   Widget build(BuildContext context) {

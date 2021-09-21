@@ -19,6 +19,6 @@ abstract class _AlarmStatus with Store {
   @observable
   bool isAlarm = false;
 
-  int alarmId;
+  int? alarmId;
 
 }

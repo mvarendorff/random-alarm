@@ -8,19 +8,19 @@ part 'observable_alarm.g.dart';
 @JsonSerializable()
 class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
   ObservableAlarm(
-      {@required id,
-      @required name,
-      @required hour,
-      @required minute,
-      @required monday,
-      @required tuesday,
-      @required wednesday,
-      @required thursday,
-      @required friday,
-      @required saturday,
-      @required sunday,
-      @required volume,
-      @required active})
+      {required id,
+      required name,
+      required hour,
+      required minute,
+      required monday,
+      required tuesday,
+      required wednesday,
+      required thursday,
+      required friday,
+      required saturday,
+      required sunday,
+      required volume,
+      required active})
       : super(
           id: id,
           name: name,
@@ -65,58 +65,58 @@ class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
 }
 
 abstract class ObservableAlarmBase with Store {
-  int/*!*/ id;
+  int id;
 
   @observable
-  String/*!*/ name;
+  String name;
 
   @observable
-  int/*!*/ hour;
+  int hour;
 
   @observable
-  int/*!*/ minute;
+  int minute;
 
   @observable
-  bool/*!*/ monday;
+  bool monday;
 
   @observable
-  bool/*!*/ tuesday;
+  bool tuesday;
 
   @observable
-  bool/*!*/ wednesday;
+  bool wednesday;
 
   @observable
-  bool/*!*/ thursday;
+  bool thursday;
 
   @observable
-  bool/*!*/ friday;
+  bool friday;
 
   @observable
-  bool/*!*/ saturday;
+  bool saturday;
 
   @observable
-  bool/*!*/ sunday;
+  bool sunday;
 
   @observable
-  double/*!*/ volume;
+  double volume;
 
   @observable
-  bool/*!*/ active;
+  bool active;
 
   /// Field holding the IDs of the playlists that were added to the alarm
   /// This is used for JSON serialization as well as retrieving the music from
   /// the playlist when the alarm goes off
-  List<String>/*!*/ playlistIds;
+  List<String> playlistIds;
 
   /// Field holding the IDs of the soundfiles that should be loaded
   /// This is exclusively used for JSON serialization
-  List<String>/*!*/ musicIds;
+  List<String> musicIds;
 
   /// Field holding the paths of the soundfiles that should be loaded.
   /// musicIds cannot be used in the alarm callback because of a weird
   /// interaction between flutter_audio_query and android_alarm_manager
   /// See Stack Overflow post here: https://stackoverflow.com/q/60203223/6707985
-  List<String/*!*/>/*!*/ musicPaths;
+  List<String> musicPaths;
 
   @observable
   @JsonKey(ignore: true)
@@ -127,30 +127,30 @@ abstract class ObservableAlarmBase with Store {
   ObservableList<PlaylistInfo> playlistInfo = ObservableList();
 
   ObservableAlarmBase(
-      {@required this.id,
-      @required this.name,
-      @required this.hour,
-      @required this.minute,
-      @required this.monday,
-      @required this.tuesday,
-      @required this.wednesday,
-      @required this.thursday,
-      @required this.friday,
-      @required this.saturday,
-      @required this.sunday,
-      @required this.volume,
-      @required this.active,
-      @required this.musicIds,
-      @required this.musicPaths});
+      {required this.id,
+      required this.name,
+      required this.hour,
+      required this.minute,
+      required this.monday,
+      required this.tuesday,
+      required this.wednesday,
+      required this.thursday,
+      required this.friday,
+      required this.saturday,
+      required this.sunday,
+      required this.volume,
+      required this.active,
+      required this.musicIds,
+      required this.musicPaths});
 
   @action
-  void removeItem(SongInfo/*!*/ info) {
+  void removeItem(SongInfo info) {
     trackInfo.remove(info);
     trackInfo = trackInfo;
   }
 
   @action
-  void removePlaylist(PlaylistInfo/*!*/ info) {
+  void removePlaylist(PlaylistInfo info) {
     playlistInfo.remove(info);
     playlistInfo = playlistInfo;
   }
@@ -186,14 +186,14 @@ abstract class ObservableAlarmBase with Store {
       return;
     }
 
-    final playlists = await FlutterAudioQuery().getPlaylists();
+    final playlists = await (FlutterAudioQuery().getPlaylists() as FutureOr<List<PlaylistInfo>>);
     playlistInfo = ObservableList.of(
         playlists.where((info) => playlistIds.contains(info.id)));
   }
 
   updateMusicPaths() {
     musicIds = trackInfo.map((SongInfo info) => info.id).toList();
-    musicPaths = trackInfo.map((SongInfo info) => info.filePath).toList();
+    musicPaths = trackInfo.map((SongInfo info) => info.filePath).toList() as List<String>;
     playlistIds = playlistInfo.map((info) => info.id).toList();
   }
 

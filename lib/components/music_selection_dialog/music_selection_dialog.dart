@@ -8,7 +8,7 @@ import '../../stores/observable_alarm/observable_alarm.dart';
 
 bool songFilter(SongInfo info, String currentSearch) {
   final filter = RegExp(currentSearch, caseSensitive: false);
-  return info.title.contains(filter) || info.displayName.contains(filter);
+  return info.title!.contains(filter) || info.displayName!.contains(filter);
 }
 
 class MusicSelectionDialog extends StatelessWidget {
@@ -17,7 +17,7 @@ class MusicSelectionDialog extends StatelessWidget {
 
   final SearchableSelectionStore<SongInfo> store;
 
-  MusicSelectionDialog({Key key, this.titles, this.alarm})
+  MusicSelectionDialog({Key? key, required this.titles, required this.alarm})
       : store = SearchableSelectionStore(
             titles,
             alarm.trackInfo.map((info) => info.id).toList(),
@@ -45,9 +45,9 @@ class MusicSelectionDialog extends StatelessWidget {
 }
 
 class MusicList extends StatelessWidget {
-  final SearchableSelectionStore<SongInfo>/*!*/ store;
+  final SearchableSelectionStore<SongInfo> store;
 
-  const MusicList({Key key, this.store}) : super(key: key);
+  const MusicList({Key? key, required this.store}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +66,9 @@ class MusicList extends StatelessWidget {
     return Observer(
         builder: (context) => CheckboxListTile(
               value: store.itemSelected[title.id] ?? false,
-              title: Text(title.title ?? title.displayName),
+              title: Text(title.title ?? title.displayName!),
               onChanged: (newValue) {
-                return store.itemSelected[title.id] = newValue;
+                return store.itemSelected[title.id] = newValue!;
               },
             ));
   }

@@ -30,7 +30,7 @@ abstract class _SearchableSelectionStore<T> with Store {
   }
 
   @observable
-  ObservableMap<String, bool /*!*/ > itemSelected = ObservableMap();
+  ObservableMap<String, bool > itemSelected = ObservableMap();
 
   @observable
   String currentSearch = "";

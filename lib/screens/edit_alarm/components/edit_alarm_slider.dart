@@ -3,9 +3,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../../stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarmSlider extends StatelessWidget {
-  final ObservableAlarm/*!*/ alarm;
+  final ObservableAlarm alarm;
 
-  const EditAlarmSlider({Key key, this.alarm}) : super(key: key);
+  const EditAlarmSlider({Key? key, required this.alarm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
