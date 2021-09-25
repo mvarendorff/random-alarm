@@ -12,7 +12,8 @@ class PlaylistSelectionDialog extends StatelessWidget {
 
   final SearchableSelectionStore<PlaylistInfo> store;
 
-  PlaylistSelectionDialog({Key? key, required this.alarm, required this.playlists})
+  PlaylistSelectionDialog(
+      {Key? key, required this.alarm, required this.playlists})
       : store = SearchableSelectionStore(
             playlists,
             alarm.playlistInfo.map((info) => info.id).toList(),
@@ -63,12 +64,13 @@ class PlaylistList extends StatelessWidget {
     final playlist = playlists.firstWhere((info) => info.id == id);
 
     return Observer(
-        builder: (context) => CheckboxListTile(
-              value: store.itemSelected[playlist.id] ?? false,
-              title: Text(playlist.name!),
-              onChanged: (newValue) {
-                return store.itemSelected[playlist.id] = newValue!;
-              },
-            ));
+      builder: (context) => CheckboxListTile(
+        value: store.itemSelected[playlist.id] ?? false,
+        title: Text(playlist.name!),
+        onChanged: (newValue) {
+          store.itemSelected[playlist.id] = newValue!;
+        },
+      ),
+    );
   }
 }

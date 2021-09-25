@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarmTime extends StatelessWidget {
@@ -20,9 +21,15 @@ class EditAlarmTime extends StatelessWidget {
           );
         }),
         onTap: () async {
-          final time = await (showTimePicker(
-              context: context,
-              initialTime: TimeOfDay(hour: alarm.hour, minute: alarm.minute)) as FutureOr<TimeOfDay>);
+          final time = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay(hour: alarm.hour, minute: alarm.minute),
+          );
+
+          if (time == null) {
+            return;
+          }
+
           alarm.hour = time.hour;
           alarm.minute = time.minute;
         },

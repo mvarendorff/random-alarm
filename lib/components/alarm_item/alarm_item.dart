@@ -49,7 +49,7 @@ class AlarmItem extends StatelessWidget {
                       ? Icon(Icons.alarm, color: Colors.deepOrange)
                       : Icon(Icons.alarm_off),
                   onPressed: () {
-                    return alarm.active = !alarm.active;
+                    alarm.active = !alarm.active;
                   },
                 )
               ],

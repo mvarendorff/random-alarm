@@ -424,6 +424,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.1"
+  perfect_volume_control:
+    dependency: "direct main"
+    description:
+      name: perfect_volume_control
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   platform:
     dependency: transitive
     description:
@@ -541,13 +548,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  system_shortcuts:
-    dependency: transitive
-    description:
-      name: system_shortcuts
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
   term_glyph:
     dependency: transitive
     description:
@@ -590,13 +590,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  volume:
-    dependency: "direct main"
-    description:
-      name: volume
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.4"
   wakelock:
     dependency: "direct main"
     description:

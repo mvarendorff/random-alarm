@@ -3,6 +3,8 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:wakelock/wakelock.dart';
+
 import 'screens/alarm_screen/alarm_screen.dart';
 import 'screens/home_screen/home_screen.dart';
 import 'services/alarm_polling_worker.dart';
@@ -11,8 +13,6 @@ import 'services/life_cycle_listener.dart';
 import 'services/media_handler.dart';
 import 'stores/alarm_list/alarm_list.dart';
 import 'stores/alarm_status/alarm_status.dart';
-import 'package:volume/volume.dart';
-import 'package:wakelock/wakelock.dart';
 
 AlarmList list = AlarmList();
 
@@ -30,11 +30,14 @@ void main() async {
   await AndroidAlarmManager.initialize();
   AlarmPollingWorker().createPollingWorker();
 
-  final externalPath = (await (getExternalStorageDirectory() as FutureOr<Directory>));
-  print(externalPath.path);
-  if (!externalPath.existsSync()) externalPath.create(recursive: true);
+  final externalPath = await getExternalStorageDirectory();
+  if (externalPath == null) {
+    return;
+  }
 
-  Volume.controlVolume(AudioManager.STREAM_MUSIC);
+  if (!externalPath.existsSync()) {
+    externalPath.create(recursive: true);
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -51,8 +54,8 @@ class MyApp extends StatelessWidget {
 
           if (status.isAlarm) {
             final id = status.alarmId;
-            final alarm = list.alarms
-                .firstWhereOrNull((alarm) => alarm.id == id)!;
+            final alarm =
+                list.alarms.firstWhereOrNull((alarm) => alarm.id == id)!;
 
             MediaHandler mediaHandler = MediaHandler();
 

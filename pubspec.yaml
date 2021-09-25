@@ -12,6 +12,7 @@ description: An alarm app that lets you configure a list of sounds or music to w
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.0+1
+publish_to: none
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -29,8 +30,8 @@ dependencies:
   android_alarm_manager_plus: ^1.2.0
   audioplayers: ^0.20.1
   intl: ^0.17.0
+  perfect_volume_control: ^1.0.4
   slide_to_act: ^2.0.1
-  volume: ^0.1.4
   wakelock: ^0.5.6
   collection: ^1.15.0-nullsafety.4
 

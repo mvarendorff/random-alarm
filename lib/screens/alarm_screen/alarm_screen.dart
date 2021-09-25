@@ -12,7 +12,8 @@ class AlarmScreen extends StatelessWidget {
   final ObservableAlarm alarm;
   final MediaHandler mediaHandler;
 
-  const AlarmScreen({Key? key, required this.alarm, required this.mediaHandler}) : super(key: key);
+  const AlarmScreen({Key? key, required this.alarm, required this.mediaHandler})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class AlarmScreen extends StatelessWidget {
                         color: Colors.white),
                   ),
                   Text(
-                    alarm?.name,
+                    alarm.name,
                     style: TextStyle(color: Colors.white, fontSize: 24),
                   ),
                 ],

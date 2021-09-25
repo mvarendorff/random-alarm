@@ -68,7 +68,7 @@ class MusicList extends StatelessWidget {
               value: store.itemSelected[title.id] ?? false,
               title: Text(title.title ?? title.displayName!),
               onChanged: (newValue) {
-                return store.itemSelected[title.id] = newValue!;
+                store.itemSelected[title.id] = newValue!;
               },
             ));
   }

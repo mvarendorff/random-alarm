@@ -1,4 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'dart:async';
+
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
@@ -106,7 +107,7 @@ abstract class ObservableAlarmBase with Store {
   /// Field holding the IDs of the playlists that were added to the alarm
   /// This is used for JSON serialization as well as retrieving the music from
   /// the playlist when the alarm goes off
-  List<String> playlistIds;
+  List<String> playlistIds = [];
 
   /// Field holding the IDs of the soundfiles that should be loaded
   /// This is exclusively used for JSON serialization
@@ -186,14 +187,21 @@ abstract class ObservableAlarmBase with Store {
       return;
     }
 
-    final playlists = await (FlutterAudioQuery().getPlaylists() as FutureOr<List<PlaylistInfo>>);
-    playlistInfo = ObservableList.of(
-        playlists.where((info) => playlistIds.contains(info.id)));
+    final playlists = await FlutterAudioQuery().getPlaylists() ?? [];
+
+    final selectedPlaylists = playlists
+        .whereType<PlaylistInfo>()
+        .where((info) => playlistIds.contains(info.id));
+
+    playlistInfo = ObservableList.of(selectedPlaylists);
   }
 
   updateMusicPaths() {
     musicIds = trackInfo.map((SongInfo info) => info.id).toList();
-    musicPaths = trackInfo.map((SongInfo info) => info.filePath).toList() as List<String>;
+    musicPaths = trackInfo
+        .map((SongInfo info) => info.filePath)
+        .whereType<String>()
+        .toList();
     playlistIds = playlistInfo.map((info) => info.id).toList();
   }
 

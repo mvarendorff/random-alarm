@@ -4,23 +4,22 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:perfect_volume_control/perfect_volume_control.dart';
+
 import '../stores/observable_alarm/observable_alarm.dart';
-import 'package:volume/volume.dart';
 
 class MediaHandler {
   late AudioPlayer _currentPlayer;
-  late int _originalVolume;
+  late double _originalVolume;
 
   changeVolume(ObservableAlarm alarm) async {
-    _originalVolume = await Volume.getVol;
-    final maxVolume = await Volume.getMaxVol;
-    final newVolume = (maxVolume * alarm.volume).toInt();
-    Volume.setVol(newVolume);
+    _originalVolume = await PerfectVolumeControl.volume;
+    PerfectVolumeControl.setVolume(alarm.volume);
   }
 
   getRandomPath(ObservableAlarm alarm) async {
     final FlutterAudioQuery query = FlutterAudioQuery();
-    final allPlaylists = await (query.getPlaylists() as FutureOr<List<PlaylistInfo>>);
+    final allPlaylists = await query.getPlaylists() ?? [];
 
     final playlistSongIdChunks = allPlaylists
         .where((playlist) => alarm.playlistIds.contains(playlist.id))
@@ -44,6 +43,10 @@ class MediaHandler {
 
     final paths = [...alarm.musicPaths, ...playlistPaths];
     print('Paths: $paths');
+
+    if (paths.isEmpty) {
+      throw ArgumentError("Empty path array found");
+    }
 
     final entry = Random().nextInt(paths.length);
     return paths[entry];
@@ -80,7 +83,7 @@ class MediaHandler {
   }
 
   stopAlarm() {
-    Volume.setVol(_originalVolume);
+    PerfectVolumeControl.setVolume(_originalVolume);
 
     _currentPlayer.stop();
     _currentPlayer.release();
