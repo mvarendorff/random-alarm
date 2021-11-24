@@ -6,10 +6,28 @@ The app is built roughly following a design concept by [Alex on Dribble](https:/
 
 ![Alarm App concept by Alex on Dribble](https://cdn.dribbble.com/users/1269204/screenshots/5068840/alarm_app_4x.png)
 
-# Important note!
+# Running for yourself
 
-This project requires a patch to be made in one of the libraries to run properly.
-The required changes are described in https://github.com/flutter/flutter/issues/30555#issuecomment-501597824 (path may vary due to a different version being installed)
+1. Clone the repository
+```
+git clone https://github.com/geisterfurz007/random-alarm.git
+```
+
+2. Switch directory and install dependencies
+```
+cd random-alarm
+flutter pub get
+```
+
+3. Adapt alarm manager package to work on the homescreen. The required changes are described in https://github.com/flutter/flutter/issues/30555#issuecomment-501597824 (path may vary due to a different version being installed; you are also not looking for the `android_alarm_manager-version` directory but `android_alarm_manager_plus-version` directory).
+
+4. Run the build runner
+```
+flutter packages pub run build_runner build
+```
+
+5. Launch on a phone or emulator of your choice using `flutter run` or your favourite IDE / editor
+
 
 # Different screens
 
