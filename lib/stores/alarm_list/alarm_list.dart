@@ -1,19 +1,28 @@
-import 'package:mobx/mobx.dart';
+import 'package:get/get.dart';
+import 'package:random_alarm/services/file_proxy.dart';
+
 import '../observable_alarm/observable_alarm.dart';
 
-part 'alarm_list.g.dart';
+class AlarmList {
+  AlarmList();
 
-class AlarmList = _AlarmList with _$AlarmList;
+  List<ObservableAlarm> alarms = <ObservableAlarm>[].obs;
 
-abstract class _AlarmList with Store {
-  _AlarmList();
+  Future<void> initialize() async {
+    final JsonFileStorage storage = Get.find();
+    final alarms = await storage.readList();
+    _setAlarms(alarms);
 
-  @observable
-  ObservableList<ObservableAlarm> alarms = ObservableList();
+    await Future.wait(alarms.map(_loadAlarm));
+  }
 
-  @action
-  void setAlarms(List<ObservableAlarm> alarms) {
+  void _setAlarms(List<ObservableAlarm> alarms) {
     this.alarms.clear();
     this.alarms.addAll(alarms);
+  }
+
+  Future<void> _loadAlarm(ObservableAlarm alarm) async {
+    await alarm.loadTracks();
+    await alarm.loadPlaylists();
   }
 }

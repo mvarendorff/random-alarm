@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarmHead extends StatelessWidget {
@@ -28,7 +28,7 @@ class EditAlarmHead extends StatelessWidget {
             ],
           ),
         ),
-        Observer(
+        Builder(
           builder: (context) => IconButton(
             icon: alarm.active
                 ? Icon(Icons.alarm, color: Colors.deepOrange)

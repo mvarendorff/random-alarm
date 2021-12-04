@@ -1,107 +1,35 @@
-import 'dart:async';
-
 import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mobx/mobx.dart';
 
 part 'observable_alarm.g.dart';
 
 @JsonSerializable()
-class ObservableAlarm extends ObservableAlarmBase with _$ObservableAlarm {
-  ObservableAlarm(
-      {required id,
-      required name,
-      required hour,
-      required minute,
-      required monday,
-      required tuesday,
-      required wednesday,
-      required thursday,
-      required friday,
-      required saturday,
-      required sunday,
-      required volume,
-      required active})
-      : super(
-          id: id,
-          name: name,
-          hour: hour,
-          minute: minute,
-          monday: monday,
-          tuesday: tuesday,
-          wednesday: wednesday,
-          thursday: thursday,
-          friday: friday,
-          saturday: saturday,
-          sunday: sunday,
-          volume: volume,
-          active: active,
-          musicIds: [],
-          musicPaths: [],
-        );
-
-  ObservableAlarm.dayList(
-      id, name, hour, minute, volume, active, weekdays, musicIds, musicPaths)
-      : super(
-            id: id,
-            name: name,
-            hour: hour,
-            minute: minute,
-            volume: volume,
-            active: active,
-            musicIds: musicIds,
-            monday: weekdays[0],
-            tuesday: weekdays[1],
-            wednesday: weekdays[2],
-            thursday: weekdays[3],
-            friday: weekdays[4],
-            saturday: weekdays[5],
-            sunday: weekdays[6],
-            musicPaths: musicPaths);
-
-  factory ObservableAlarm.fromJson(Map<String, dynamic> json) =>
-      _$ObservableAlarmFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ObservableAlarmToJson(this);
-}
-
-abstract class ObservableAlarmBase with Store {
+class ObservableAlarm extends GetxController {
   int id;
 
-  @observable
   String name;
 
-  @observable
   int hour;
 
-  @observable
   int minute;
 
-  @observable
   bool monday;
 
-  @observable
   bool tuesday;
 
-  @observable
   bool wednesday;
 
-  @observable
   bool thursday;
 
-  @observable
   bool friday;
 
-  @observable
   bool saturday;
 
-  @observable
   bool sunday;
 
-  @observable
   double volume;
 
-  @observable
   bool active;
 
   /// Field holding the IDs of the playlists that were added to the alarm
@@ -119,15 +47,13 @@ abstract class ObservableAlarmBase with Store {
   /// See Stack Overflow post here: https://stackoverflow.com/q/60203223/6707985
   List<String> musicPaths;
 
-  @observable
   @JsonKey(ignore: true)
-  ObservableList<SongInfo> trackInfo = ObservableList();
+  List<SongInfo> trackInfo = [];
 
-  @observable
   @JsonKey(ignore: true)
-  ObservableList<PlaylistInfo> playlistInfo = ObservableList();
+  List<PlaylistInfo> playlistInfo = [];
 
-  ObservableAlarmBase(
+  ObservableAlarm(
       {required this.id,
       required this.name,
       required this.hour,
@@ -144,19 +70,32 @@ abstract class ObservableAlarmBase with Store {
       required this.musicIds,
       required this.musicPaths});
 
-  @action
+  ObservableAlarm.dayList(
+    this.id,
+    this.name,
+    this.hour,
+    this.minute,
+    this.volume,
+    this.active,
+    weekdays,
+    this.musicIds,
+    this.musicPaths,
+  )   : monday = weekdays[0].obs,
+        tuesday = weekdays[1].obs,
+        wednesday = weekdays[2].obs,
+        thursday = weekdays[3].obs,
+        friday = weekdays[4].obs,
+        saturday = weekdays[5].obs,
+        sunday = weekdays[6].obs;
+
   void removeItem(SongInfo info) {
     trackInfo.remove(info);
-    trackInfo = trackInfo;
   }
 
-  @action
   void removePlaylist(PlaylistInfo info) {
     playlistInfo.remove(info);
-    playlistInfo = playlistInfo;
   }
 
-  @action
   void reorder(int oldIndex, int newIndex) {
     final path = trackInfo[oldIndex];
     trackInfo.removeAt(oldIndex);
@@ -164,10 +103,9 @@ abstract class ObservableAlarmBase with Store {
     trackInfo = trackInfo;
   }
 
-  @action
-  loadTracks() async {
+  Future<void> loadTracks() async {
     if (musicIds.length == 0) {
-      trackInfo = ObservableList();
+      trackInfo = [];
       return;
     }
 
@@ -177,13 +115,12 @@ abstract class ObservableAlarmBase with Store {
     }
 
     final songs = await FlutterAudioQuery().getSongsById(ids: musicIds);
-    trackInfo = ObservableList.of(songs);
+    trackInfo = songs;
   }
 
-  @action
-  loadPlaylists() async {
+  Future<void> loadPlaylists() async {
     if (playlistIds.length == 0) {
-      playlistInfo = ObservableList();
+      playlistInfo = [];
       return;
     }
 
@@ -191,9 +128,10 @@ abstract class ObservableAlarmBase with Store {
 
     final selectedPlaylists = playlists
         .whereType<PlaylistInfo>()
-        .where((info) => playlistIds.contains(info.id));
+        .where((info) => playlistIds.contains(info.id))
+        .toList();
 
-    playlistInfo = ObservableList.of(selectedPlaylists);
+    playlistInfo = selectedPlaylists;
   }
 
   updateMusicPaths() {
@@ -213,4 +151,9 @@ abstract class ObservableAlarmBase with Store {
   toString() {
     return "active: $active, music: $musicPaths";
   }
+
+  factory ObservableAlarm.fromJson(Map<String, dynamic> json) =>
+      _$ObservableAlarmFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ObservableAlarmToJson(this);
 }

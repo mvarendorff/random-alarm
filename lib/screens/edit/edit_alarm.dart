@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:random_alarm/screens/routes.dart';
+
 import '../../components/default_container/default_container.dart';
+import '../../services/alarm_list_manager.dart';
+import '../../services/alarm_scheduler.dart';
 import 'components/edit_alarm_days.dart';
 import 'components/edit_alarm_head.dart';
 import 'components/edit_alarm_music.dart';
 import 'components/edit_alarm_slider.dart';
 import 'components/edit_alarm_time.dart';
-import '../../services/alarm_list_manager.dart';
-import '../../services/alarm_scheduler.dart';
-import '../../stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarm extends StatelessWidget {
-  final ObservableAlarm alarm;
-  final AlarmListManager manager;
-
-  EditAlarm({required this.alarm, required this.manager});
+  static const routeName = "/edit";
 
   @override
   Widget build(BuildContext context) {
+    final FileStorageManager manager = Get.find();
+    final alarm = (Get.arguments as AlarmArguments).alarm;
+
     return WillPopScope(
       onWillPop: () async {
         await manager.saveAlarm(alarm);
@@ -37,15 +39,15 @@ class EditAlarm extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
-                    EditAlarmHead(alarm: this.alarm),
+                    EditAlarmHead(alarm: alarm),
                     Divider(),
-                    EditAlarmTime(alarm: this.alarm),
+                    EditAlarmTime(alarm: alarm),
                     Divider(),
-                    EditAlarmDays(alarm: this.alarm),
+                    EditAlarmDays(alarm: alarm),
                     Divider(),
-                    EditAlarmMusic(alarm: this.alarm),
+                    EditAlarmMusic(alarm: alarm),
                     Divider(),
-                    EditAlarmSlider(alarm: this.alarm)
+                    EditAlarmSlider(alarm: alarm),
                   ],
                 ),
               ),

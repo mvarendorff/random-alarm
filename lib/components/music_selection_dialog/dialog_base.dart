@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-/// Base class for a searchable dialog
-///
-/// Not sure I really want this tbh O-O
 class DialogBase extends StatelessWidget {
-  // -- Base
-
   final VoidCallback? onDone;
   final void Function(String)? onSearchChange;
   final VoidCallback? onSearchClear;
@@ -32,13 +28,14 @@ class DialogBase extends StatelessWidget {
             Row(
               children: <Widget>[
                 Expanded(
-                    child: TextField(
-                        onChanged: onSearchChange, controller: controller)),
+                  child: TextField(
+                    onChanged: onSearchChange,
+                    controller: controller,
+                  ),
+                ),
                 IconButton(
                   icon: Icon(Icons.clear),
-                  onPressed: () {
-                    controller.clear();
-                  },
+                  onPressed: () => controller.clear(),
                 )
               ],
             ),
@@ -48,13 +45,13 @@ class DialogBase extends StatelessWidget {
               children: <Widget>[
                 TextButton(
                   child: Text('Cancel'),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: Get.back,
                 ),
                 TextButton(
                   child: Text('Done'),
                   onPressed: () {
                     onDone?.call();
-                    return Navigator.pop(context);
+                    Get.back();
                   },
                 )
               ],

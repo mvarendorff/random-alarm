@@ -1,24 +1,16 @@
-import 'package:mobx/mobx.dart';
+import 'package:get/get.dart';
 
-part 'alarm_status.g.dart';
+class AlarmStatus {
+  RxBool isAlarm = false.obs;
+  Rx<int?> alarmId = null.obs;
 
-class AlarmStatus extends _AlarmStatus with _$AlarmStatus {
-
-  static final AlarmStatus _instance = AlarmStatus._();
-
-  factory AlarmStatus() {
-    return _instance;
+  void setAlarmFound(int id) {
+    isAlarm.value = true;
+    alarmId.value = id;
   }
 
-  AlarmStatus._();
-
-}
-
-abstract class _AlarmStatus with Store {
-
-  @observable
-  bool isAlarm = false;
-
-  int? alarmId;
-
+  void turnOff() {
+    isAlarm.value = false;
+    alarmId.value = null;
+  }
 }

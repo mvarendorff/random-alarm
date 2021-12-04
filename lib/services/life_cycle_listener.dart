@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../stores/alarm_list/alarm_list.dart';
 import 'alarm_polling_worker.dart';
 import 'file_proxy.dart';
-import '../stores/alarm_list/alarm_list.dart';
 
 class LifeCycleListener extends WidgetsBindingObserver {
-  final AlarmList alarms;
-
-  LifeCycleListener(this.alarms);
+  LifeCycleListener();
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
@@ -24,6 +24,7 @@ class LifeCycleListener extends WidgetsBindingObserver {
   }
 
   void saveAlarms() {
+    final AlarmList alarms = Get.find();
     alarms.alarms.forEach((alarm) => alarm.updateMusicPaths());
     JsonFileStorage().writeList(alarms.alarms);
   }

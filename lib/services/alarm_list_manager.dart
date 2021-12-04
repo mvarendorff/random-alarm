@@ -1,12 +1,12 @@
-import 'file_proxy.dart';
 import '../stores/alarm_list/alarm_list.dart';
 import '../stores/observable_alarm/observable_alarm.dart';
+import 'file_proxy.dart';
 
-class AlarmListManager {
+class FileStorageManager {
   final AlarmList _alarms;
   final JsonFileStorage _storage = JsonFileStorage();
 
-  AlarmListManager(this._alarms);
+  FileStorageManager(this._alarms);
 
   saveAlarm(ObservableAlarm alarm) async {
     await alarm.updateMusicPaths();

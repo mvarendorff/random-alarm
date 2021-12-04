@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
-import 'dialog_base.dart';
+
 import '../../stores/music_selection/searchable_selection.dart';
 import '../../stores/observable_alarm/observable_alarm.dart';
+import 'dialog_base.dart';
 
 class PlaylistSelectionDialog extends StatelessWidget {
   final ObservableAlarm alarm;
@@ -28,8 +27,9 @@ class PlaylistSelectionDialog extends StatelessWidget {
     final onDone = () {
       final newSelected = store.itemSelected.entries
           .where((entry) => entry.value)
-          .map((entry) => entry.key);
-      alarm.playlistIds = ObservableList.of(newSelected);
+          .map((entry) => entry.key)
+          .toList();
+      alarm.playlistIds = newSelected;
       alarm.loadPlaylists();
     };
 
@@ -51,7 +51,7 @@ class PlaylistList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
+    return Builder(
       builder: (context) => ListView(
         shrinkWrap: true,
         children: store.filteredIds.map(widgetForPlaylistId).toList(),
@@ -63,7 +63,7 @@ class PlaylistList extends StatelessWidget {
     final List<PlaylistInfo> playlists = store.availableItems;
     final playlist = playlists.firstWhere((info) => info.id == id);
 
-    return Observer(
+    return Builder(
       builder: (context) => CheckboxListTile(
         value: store.itemSelected[playlist.id] ?? false,
         title: Text(playlist.name!),

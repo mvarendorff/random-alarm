@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../components/music_selection_dialog/music_selection_dialog.dart';
 import '../../../components/music_selection_dialog/playlist_selection_dialog.dart';
+import '../../../stores/observable_alarm/observable_alarm.dart';
 import 'music_list_item.dart';
 import 'playlist_list_item.dart';
-import '../../../stores/observable_alarm/observable_alarm.dart';
 
 enum SelectionMode { SINGLE, PLAYLIST }
 
@@ -58,7 +58,8 @@ class EditAlarmMusic extends StatelessWidget {
                   {"text": "Playlist", "value": SelectionMode.PLAYLIST},
                 ]
                     .map((item) => PopupMenuItem<SelectionMode>(
-                        value: item["value"] as SelectionMode?, child: Text(item["text"] as String)))
+                        value: item["value"] as SelectionMode?,
+                        child: Text(item["text"] as String)))
                     .toList();
               },
               onSelected: (selection) {
@@ -76,7 +77,7 @@ class EditAlarmMusic extends StatelessWidget {
         ),
         SizedBox.fromSize(
           size: Size.fromHeight(300),
-          child: Observer(
+          child: Builder(
             builder: (context) {
               final musicListItems = alarm.trackInfo
                   .map((info) => MusicListItem(

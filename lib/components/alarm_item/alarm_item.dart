@@ -1,6 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import '../../screens/edit_alarm/edit_alarm.dart';
+import 'package:get/get.dart';
+
+import '../../screens/edit/edit_alarm.dart';
+import '../../screens/routes.dart';
 import '../../services/alarm_list_manager.dart';
 import '../../stores/observable_alarm/observable_alarm.dart';
 
@@ -8,7 +11,7 @@ const dates = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
 class AlarmItem extends StatelessWidget {
   final ObservableAlarm alarm;
-  final AlarmListManager manager;
+  final FileStorageManager manager;
 
   const AlarmItem({Key? key, required this.alarm, required this.manager})
       : super(key: key);
@@ -16,12 +19,11 @@ class AlarmItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  EditAlarm(alarm: this.alarm, manager: manager))),
-      child: Observer(
+      onTap: () => Get.to(
+        EditAlarm.routeName,
+        arguments: AlarmArguments(this.alarm),
+      ),
+      child: Builder(
         builder: (context) => Card(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -85,15 +87,9 @@ class DateRow extends StatelessWidget {
       size: Size(150, 25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: dates.asMap().entries.map((indexStringPair) {
-          final dayString = indexStringPair.value;
-          final index = indexStringPair.key;
-          return Text(
-            dayString,
-            style: TextStyle(
-                fontWeight:
-                    dayEnabled[index] ? FontWeight.bold : FontWeight.normal),
-          );
+        children: dates.mapIndexed((index, dayString) {
+          final fw = dayEnabled[index] ? FontWeight.bold : FontWeight.normal;
+          return Text(dayString, style: TextStyle(fontWeight: fw));
         }).toList(),
       ),
     );

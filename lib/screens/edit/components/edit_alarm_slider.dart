@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarmSlider extends StatelessWidget {
@@ -9,7 +9,7 @@ class EditAlarmSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
+    return Builder(
       builder: (context) => Slider(
         value: alarm.volume,
         min: 0,

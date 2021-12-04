@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../stores/observable_alarm/observable_alarm.dart';
 
 class EditAlarmDays extends StatelessWidget {
@@ -9,7 +9,7 @@ class EditAlarmDays extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
+    return Builder(
       builder: (context) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -59,7 +59,11 @@ class WeekDayToggle extends StatelessWidget {
   final bool current;
   final String text;
 
-  const WeekDayToggle({Key? key, required this.onToggle, required this.current, required this.text})
+  const WeekDayToggle(
+      {Key? key,
+      required this.onToggle,
+      required this.current,
+      required this.text})
       : super(key: key);
 
   @override

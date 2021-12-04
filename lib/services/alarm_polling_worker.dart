@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:random_alarm/screens/routes.dart';
+import 'package:random_alarm/stores/alarm_list/alarm_list.dart';
+
 import '../stores/alarm_status/alarm_status.dart';
 
 class AlarmPollingWorker {
@@ -26,9 +30,15 @@ class AlarmPollingWorker {
     running = true;
     poller(60).then((alarmId) {
       running = false;
-      if (alarmId != null && AlarmStatus().alarmId == null) {
-        AlarmStatus().isAlarm = true;
-        AlarmStatus().alarmId = int.parse(alarmId);
+      if (alarmId != null && AlarmStatus().isAlarm.isFalse) {
+        final parsedId = int.parse(alarmId);
+        final AlarmList list = Get.find();
+        final alarm = list.alarms.firstWhere(
+          (element) => element.id == parsedId,
+        );
+
+        Get.to('/alarm', arguments: AlarmArguments(alarm));
+
         cleanUpAlarmFiles();
       }
     });

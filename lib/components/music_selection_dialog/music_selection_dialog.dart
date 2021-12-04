@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
-import 'dialog_base.dart';
+
 import '../../stores/music_selection/searchable_selection.dart';
 import '../../stores/observable_alarm/observable_alarm.dart';
+import 'dialog_base.dart';
 
 bool songFilter(SongInfo info, String currentSearch) {
   final filter = RegExp(currentSearch, caseSensitive: false);
@@ -30,8 +29,9 @@ class MusicSelectionDialog extends StatelessWidget {
     final onDone = () {
       final newSelected = store.itemSelected.entries
           .where((entry) => entry.value)
-          .map((entry) => entry.key);
-      alarm.musicIds = ObservableList.of(newSelected);
+          .map((entry) => entry.key)
+          .toList();
+      alarm.musicIds = newSelected;
       alarm.loadTracks();
     };
 
@@ -51,7 +51,7 @@ class MusicList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
+    return Builder(
       builder: (context) => ListView(
         shrinkWrap: true,
         children: store.filteredIds.map(widgetForSongId).toList(),
@@ -63,13 +63,14 @@ class MusicList extends StatelessWidget {
     final List<SongInfo> titles = store.availableItems;
     final title = titles.firstWhere((info) => info.id == id);
 
-    return Observer(
-        builder: (context) => CheckboxListTile(
-              value: store.itemSelected[title.id] ?? false,
-              title: Text(title.title ?? title.displayName!),
-              onChanged: (newValue) {
-                store.itemSelected[title.id] = newValue!;
-              },
-            ));
+    return Builder(
+      builder: (context) => CheckboxListTile(
+        value: store.itemSelected[title.id] ?? false,
+        title: Text(title.title ?? title.displayName!),
+        onChanged: (newValue) {
+          store.itemSelected[title.id] = newValue!;
+        },
+      ),
+    );
   }
 }

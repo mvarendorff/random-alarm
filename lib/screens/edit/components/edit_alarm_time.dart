@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../stores/observable_alarm/observable_alarm.dart';
 
@@ -12,7 +11,7 @@ class EditAlarmTime extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        child: Observer(builder: (context) {
+        child: Builder(builder: (context) {
           final hours = alarm.hour.toString().padLeft(2, '0');
           final minutes = alarm.minute.toString().padLeft(2, '0');
           return Text(
