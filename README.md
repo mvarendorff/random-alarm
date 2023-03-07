@@ -1,3 +1,7 @@
+# This project is archived
+
+While I had a usecase for this app years ago, I don't anymore and as you can see, it's way outdated after 2 years without attention. For some it might still serve as inspiration but at this point, this is so outdated that I'd have to rebuild it from the ground up which I don't have the time for.
+
 # Random Alarm
 
 An alarm app that lets you configure a list of sounds or music to wake you up with a random one each morning!
